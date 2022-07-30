@@ -14,6 +14,7 @@ namespace Quasar.Server
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             Application.EnableVisualStyles();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmMain());
         }
