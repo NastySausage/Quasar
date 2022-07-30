@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quasar.Server", "Quasar.Server\Quasar.Server.csproj", "{14CA405B-8BAC-48AB-9FBA-8FB5DF88FD0D}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quasar.Common", "Quasar.Common\Quasar.Common.csproj", "{C7C363BA-E5B6-4E18-9224-39BC8DA73172}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quasar.Common.Tests", "Quasar.Common.Tests\Quasar.Common.Tests.csproj", "{32A2A734-7429-47E6-A362-E344A19C0D85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04E06F20-27A3-4BEE-B327-23AEFDA0E151}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -69,8 +69,7 @@ namespace Quasar.Client.Networking
                 if (!Connected)
                 {
                     Host host = _hosts.GetNextHost();
-
-                    base.Connect(host.IpAddress, host.Port);
+                    Connect(host.IpAddress, host.Port);
                 }
 
                 while (Connected) // hold client open

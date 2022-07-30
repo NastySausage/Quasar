@@ -279,6 +279,7 @@ namespace Quasar.Server.Networking
                                 clientSocket.SetKeepAliveEx(KeepAliveInterval, KeepAliveTime);
                                 sslStream = new SslStream(new NetworkStream(clientSocket, true), false);
                                 // the SslStream owns the socket and on disposing also disposes the NetworkStream and Socket
+                                Console.WriteLine("Authenticating client");
                                 sslStream.BeginAuthenticateAsServer(ServerCertificate, false, SslProtocols.Tls12, false, EndAuthenticateClient,
                                     new PendingClient {Stream = sslStream, EndPoint = (IPEndPoint) clientSocket.RemoteEndPoint});
                             }
@@ -317,6 +318,7 @@ namespace Quasar.Server.Networking
         /// <param name="ar">The status of the asynchronous operation.</param>
         private void EndAuthenticateClient(IAsyncResult ar)
         {
+            Console.WriteLine("ending");
             var con = (PendingClient) ar.AsyncState;
             try
             {

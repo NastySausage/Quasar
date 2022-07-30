@@ -25,7 +25,7 @@ namespace Quasar.Client
             AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
 
             Application.EnableVisualStyles();
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            // Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new QuasarApplication());
         }

@@ -99,9 +99,9 @@ namespace Quasar.Client.Config
         {
             try
             {
-                var csp = (RSACryptoServiceProvider) SERVERCERTIFICATE.PublicKey.Key;
-                return csp.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(ENCRYPTIONKEY)), CryptoConfig.MapNameToOID("SHA256"),
-                    Convert.FromBase64String(SERVERSIGNATURE));
+                var rsa= SERVERCERTIFICATE.GetRSAPublicKey();
+                return rsa.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(ENCRYPTIONKEY)), Convert.FromBase64String(SERVERSIGNATURE),
+                    HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
                 
             }
             catch (Exception)

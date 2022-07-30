@@ -37,7 +37,7 @@ namespace Quasar.Server.Helper
             certificateGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
             certificateGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(caCert.GetPublicKey()));
 
-            var caKeyPair = DotNetUtilities.GetKeyPair(ca.PrivateKey);
+            var caKeyPair = DotNetUtilities.GetKeyPair(ca.GetRSAPrivateKey());
 
             ISignatureFactory signatureFactory = new Asn1SignatureFactory("SHA512WITHRSA", caKeyPair.Private, random);
 
@@ -46,7 +46,7 @@ namespace Quasar.Server.Helper
             certificate.Verify(caCert.GetPublicKey());
 
             var certificate2 = new X509Certificate2(DotNetUtilities.ToX509Certificate(certificate));
-            certificate2.PrivateKey = DotNetUtilities.ToRSA(keyPair.Private as RsaPrivateCrtKeyParameters);
+            certificate2=certificate2.CopyWithPrivateKey( DotNetUtilities.ToRSA(keyPair.Private as RsaPrivateCrtKeyParameters));
 
             return certificate2;
         }
@@ -77,7 +77,7 @@ namespace Quasar.Server.Helper
             var certificate = certificateGenerator.Generate(signatureFactory);
 
             var certificate2 = new X509Certificate2(DotNetUtilities.ToX509Certificate(certificate));
-            certificate2.PrivateKey = DotNetUtilities.ToRSA(keypair.Private as RsaPrivateCrtKeyParameters);
+            certificate2=certificate2.CopyWithPrivateKey( DotNetUtilities.ToRSA(keypair.Private as RsaPrivateCrtKeyParameters));
 
             return certificate2;
         }

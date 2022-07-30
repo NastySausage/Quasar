@@ -61,7 +61,6 @@ namespace Quasar.Client.Networking
             if (Connected == connected) return;
 
             Connected = connected;
-
             var handler = ClientState;
             handler?.Invoke(this, connected);
         }
@@ -276,6 +275,7 @@ namespace Quasar.Client.Networking
                     _stream = new SslStream(new NetworkStream(handle, true), false, ValidateServerCertificate);
                     _stream.AuthenticateAsClient(ip.ToString(), null, SslProtocols.Tls12, false);
                     _stream.BeginRead(_readBuffer, 0, _readBuffer.Length, AsyncReceive, null);
+
                     OnClientState(true);
                 }
                 else
@@ -304,10 +304,9 @@ namespace Quasar.Client.Networking
             // for debugging don't validate server certificate
             return true;
 #else
-            var serverCsp = (RSACryptoServiceProvider)_serverCertificate.PublicKey.Key;
-            var connectedCsp = (RSACryptoServiceProvider)new X509Certificate2(certificate).PublicKey.Key;
             // compare the received server certificate with the included server certificate to validate we are connected to the correct server
-            return _serverCertificate.Equals(certificate);
+            var verified = _serverCertificate.GetPublicKey().SequenceEqual(certificate.GetPublicKey());
+            return verified;
 #endif
         }
 
@@ -320,7 +319,9 @@ namespace Quasar.Client.Networking
                 bytesTransferred = _stream.EndRead(result);
 
                 if (bytesTransferred <= 0)
-                    throw new Exception("no bytes transferred");
+                {
+                    throw new Exception("empty data");
+                }
             }
             catch (NullReferenceException)
             {
@@ -330,7 +331,7 @@ namespace Quasar.Client.Networking
             {
                 return;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Disconnect();
                 return;
