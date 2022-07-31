@@ -13,6 +13,7 @@ using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Quasar.Client.Networking
 {
@@ -269,7 +270,6 @@ namespace Quasar.Client.Networking
                 handle = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 handle.SetKeepAliveEx(KEEP_ALIVE_INTERVAL, KEEP_ALIVE_TIME);
                 handle.Connect(ip, port);
-
                 if (handle.Connected)
                 {
                     _stream = new SslStream(new NetworkStream(handle, true), false, ValidateServerCertificate);
@@ -331,7 +331,7 @@ namespace Quasar.Client.Networking
             {
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Disconnect();
                 return;

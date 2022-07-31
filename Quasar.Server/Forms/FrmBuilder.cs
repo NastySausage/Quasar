@@ -1,4 +1,5 @@
-﻿using Quasar.Common.DNS;
+﻿using Quasar.Common;
+using Quasar.Common.DNS;
 using Quasar.Common.Helpers;
 using Quasar.Server.Build;
 using Quasar.Server.Models;
@@ -274,11 +275,6 @@ namespace Quasar.Server.Forms
             options.LogDirectoryName = txtLogDirectoryName.Text;
             options.HideLogDirectory = chkHideLogDirectory.Checked;
 
-            if (!File.Exists("client.bin"))
-            {
-                throw new Exception("Could not locate \"client.bin\" file. It should be in the same directory as Quasar.");
-            }
-
             if (options.RawHosts.Length < 2)
             {
                 throw new Exception("Please enter a valid host to connect to.");
@@ -378,7 +374,7 @@ namespace Quasar.Server.Forms
             {
                 BuildOptions options = (BuildOptions) o;
 
-                var builder = new ClientBuilder(options, "client.bin");
+                var builder = new ClientBuilder(options);
 
                 builder.Build();
 

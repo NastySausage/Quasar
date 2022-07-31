@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Quasar.Client.Utilities;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-using Quasar.Client.Utilities;
 
 namespace Quasar.Client.Helper
 {

@@ -1,4 +1,5 @@
-﻿using Quasar.Common.Enums;
+﻿using Quasar.Common.Cryptography;
+using Quasar.Common.Enums;
 
 namespace Quasar.Common.Extensions
 {
