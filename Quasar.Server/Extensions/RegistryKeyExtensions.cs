@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 
-namespace Quasar.Server.Extensions
+namespace Quasar.Server
 {
     public static class RegistryKeyExtensions
     {

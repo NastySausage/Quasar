@@ -1,9 +1,6 @@
-﻿using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with remote TCP connections.

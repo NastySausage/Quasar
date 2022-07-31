@@ -1,9 +1,5 @@
-﻿using Quasar.Client.Extensions;
-using Quasar.Client.Helper;
-using Quasar.Client.Registry;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
+﻿using Quasar.Client.Registry;
+using Quasar.Common;
 using System;
 
 namespace Quasar.Client.Messages

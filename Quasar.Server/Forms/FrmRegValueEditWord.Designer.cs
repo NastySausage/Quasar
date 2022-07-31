@@ -1,7 +1,7 @@
 ﻿using Quasar.Server.Controls;
 using Quasar.Server.Enums;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     partial class FrmRegValueEditWord
     {

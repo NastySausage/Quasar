@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Quasar.Common.Cryptography
+namespace Quasar.Common
 {
     public static class Sha256
     {

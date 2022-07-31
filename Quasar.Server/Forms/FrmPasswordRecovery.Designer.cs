@@ -1,6 +1,6 @@
 ﻿using Quasar.Server.Controls;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     partial class FrmPasswordRecovery
     {

@@ -12,14 +12,14 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the boundary of
         /// a single line
         /// </summary>
-        Rectangle _recStringView;
+        private Rectangle _recStringView;
 
         /// <summary>
         /// Contains the format of the 
         /// string to be used in the
         /// string view
         /// </summary>
-        StringFormat _stringFormat;
+        private StringFormat _stringFormat;
 
         private HexEditor _editor;
 
@@ -315,7 +315,7 @@ namespace Quasar.Server.Controls.HexEditor
         private Point GetCaretLocation(int index)
         {
             int xPos = _recStringView.X + ((int)_editor.CharSize.Width * (index % _editor.BytesPerLine));
-            int yPos = _recStringView.Y + ((int)_recStringView.Height * ((index - (_editor.FirstVisibleByte + index % _editor.BytesPerLine)) / _editor.BytesPerLine));
+            int yPos = _recStringView.Y + (_recStringView.Height * ((index - (_editor.FirstVisibleByte + index % _editor.BytesPerLine)) / _editor.BytesPerLine));
 
             Point ret = new Point(xPos, yPos);
             return ret;

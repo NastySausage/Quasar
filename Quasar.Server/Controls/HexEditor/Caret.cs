@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using Quasar.Common;
 
 namespace Quasar.Server.Controls.HexEditor
 {
@@ -12,21 +12,21 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the start index
         /// where the caret started
         /// </summary>
-        int _startIndex;
+        private int _startIndex;
 
         /// <summary>
         /// Contains the end index
         /// where the caret is 
         /// currently located
         /// </summary>
-        int _endIndex;
+        private int _endIndex;
 
         /// <summary>
         /// Tells if the given caret
         /// is active in the controller
         /// (control is in focus)
         /// </summary>
-        bool _isCaretActive;
+        private bool _isCaretActive;
 
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace Quasar.Server.Controls.HexEditor
         /// currently hidden or 
         /// not (out of view)
         /// </summary>
-        bool _isCaretHidden;
+        private bool _isCaretHidden;
 
         /// <summary>
         /// Holds the actual position
         /// of the caret
         /// </summary>
-        Point _location;
+        private Point _location;
 
         private HexEditor _editor;
 
@@ -116,7 +116,7 @@ namespace Quasar.Server.Controls.HexEditor
             if (!_isCaretActive)
             {
                 _isCaretActive = true;
-                return CreateCaret(hWHandler, IntPtr.Zero, 0, (int)_editor.CharSize.Height - 2);
+                return Win32.CreateCaret(hWHandler, IntPtr.Zero, 0, (int)_editor.CharSize.Height - 2);
             }
 
             return false;
@@ -127,7 +127,7 @@ namespace Quasar.Server.Controls.HexEditor
             if (_isCaretActive)
             {
                 _isCaretHidden = false;
-                return ShowCaret(hWnd);
+                return Win32.ShowCaret(hWnd);
             }
 
             return false;
@@ -138,7 +138,7 @@ namespace Quasar.Server.Controls.HexEditor
             if (_isCaretActive && !_isCaretHidden)
             {
                 _isCaretHidden = true;
-                return HideCaret(hWnd);
+                return Win32.HideCaret(hWnd);
             }
             return false;
         }
@@ -149,7 +149,7 @@ namespace Quasar.Server.Controls.HexEditor
             {
                 _isCaretActive = false;
                 DeSelect();
-                DestroyCaret();
+                Win32.DestroyCaret();
             }
 
             return false;
@@ -185,7 +185,7 @@ namespace Quasar.Server.Controls.HexEditor
         {
             Create(_editor.Handle);
             _location = start;
-            SetCaretPos(_location.X, _location.Y);
+            Win32.SetCaretPos(_location.X, _location.Y);
             Show(_editor.Handle);
         }
 
@@ -210,23 +210,5 @@ namespace Quasar.Server.Controls.HexEditor
 
         #endregion
 
-        #region Caret import
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool CreateCaret(IntPtr hWnd, IntPtr hBitmap, int nWidth, int nHeight);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool DestroyCaret();
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SetCaretPos(int x, int y);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool ShowCaret(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool HideCaret(IntPtr hWnd);
-
-        #endregion
     }
 }

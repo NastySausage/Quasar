@@ -1,8 +1,4 @@
 ﻿using Quasar.Common;
-using Quasar.Common.DNS;
-using Quasar.Common.Helpers;
-using Quasar.Server.Build;
-using Quasar.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmBuilder : Form
     {
@@ -71,7 +67,7 @@ namespace Quasar.Server.Forms
 
             profile.Tag = txtTag.Text;
             profile.Hosts = _hostsConverter.ListToRawHosts(_hosts);
-            profile.Delay = (int) numericUpDownDelay.Value;
+            profile.Delay = (int)numericUpDownDelay.Value;
             profile.Mutex = txtMutex.Text;
             profile.UnattendedMode = chkUnattendedMode.Checked;
             profile.InstallClient = chkInstall.Checked;
@@ -129,9 +125,9 @@ namespace Quasar.Server.Forms
             HasChanged();
 
             var host = txtHost.Text;
-            ushort port = (ushort) numericUpDownPort.Value;
+            ushort port = (ushort)numericUpDownPort.Value;
 
-            _hosts.Add(new Host {Hostname = host, Port = port});
+            _hosts.Add(new Host { Hostname = host, Port = port });
             txtHost.Text = "";
         }
 
@@ -260,7 +256,7 @@ namespace Quasar.Server.Forms
             options.Mutex = txtMutex.Text;
             options.UnattendedMode = chkUnattendedMode.Checked;
             options.RawHosts = _hostsConverter.ListToRawHosts(_hosts);
-            options.Delay = (int) numericUpDownDelay.Value;
+            options.Delay = (int)numericUpDownDelay.Value;
             options.IconPath = txtIconPath.Text;
             options.Version = Application.ProductVersion;
             options.InstallPath = GetInstallPath();
@@ -348,7 +344,7 @@ namespace Quasar.Server.Forms
             }
 
             SetBuildState(false);
-            
+
             Thread t = new Thread(BuildClient);
             t.Start(options);
         }
@@ -372,7 +368,7 @@ namespace Quasar.Server.Forms
         {
             try
             {
-                BuildOptions options = (BuildOptions) o;
+                BuildOptions options = (BuildOptions)o;
 
                 var builder = new ClientBuilder(options);
 
@@ -380,12 +376,12 @@ namespace Quasar.Server.Forms
 
                 try
                 {
-                    this.Invoke((MethodInvoker) delegate
-                    {
-                        MessageBox.Show(this,
-                            $"Successfully built client! Saved to:\\{options.OutputPath}",
-                            "Build Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    });
+                    this.Invoke((MethodInvoker)delegate
+                   {
+                       MessageBox.Show(this,
+                           $"Successfully built client! Saved to:\\{options.OutputPath}",
+                           "Build Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                   });
                 }
                 catch (Exception)
                 {

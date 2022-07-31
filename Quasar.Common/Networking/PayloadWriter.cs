@@ -1,29 +1,20 @@
 ﻿using ProtoBuf;
-using Quasar.Common.Messages;
 using System;
 using System.IO;
 
-namespace Quasar.Common.Networking
+namespace Quasar.Common
 {
     public class PayloadWriter : MemoryStream
     {
         private readonly Stream _innerStream;
+        private readonly BinaryWriter _writer;
         public bool LeaveInnerStreamOpen { get; }
 
         public PayloadWriter(Stream stream, bool leaveInnerStreamOpen)
         {
             _innerStream = stream;
+            _writer=new BinaryWriter(stream);
             LeaveInnerStreamOpen = leaveInnerStreamOpen;
-        }
-
-        public void WriteBytes(byte[] value)
-        {
-            _innerStream.Write(value, 0, value.Length);
-        }
-
-        public void WriteInteger(int value)
-        {
-            WriteBytes(BitConverter.GetBytes(value));
         }
 
         /// <summary>
@@ -37,8 +28,9 @@ namespace Quasar.Common.Networking
             {
                 Serializer.Serialize(ms, message);
                 byte[] payload = ms.ToArray();
-                WriteInteger(payload.Length);
-                WriteBytes(payload);
+                _writer.Write(BitConverter.GetBytes(payload.Length), 0, sizeof(int));
+                _writer.Write(payload, 0, payload.Length);
+                // Console.WriteLine(payload.Length);
                 return sizeof(int) + payload.Length;
             }
         }

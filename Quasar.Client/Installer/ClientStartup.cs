@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
-using Quasar.Client.Helper;
-using Quasar.Common.Enums;
+using Quasar.Common;
 using System.Diagnostics;
 
 namespace Quasar.Client.Setup

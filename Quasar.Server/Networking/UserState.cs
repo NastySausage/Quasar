@@ -1,9 +1,8 @@
-﻿using Quasar.Common.Cryptography;
-using Quasar.Common.Helpers;
+﻿using Quasar.Common;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Networking
+namespace Quasar.Server
 {
     public class UserState
     {

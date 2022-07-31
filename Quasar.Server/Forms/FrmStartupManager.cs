@@ -1,15 +1,10 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmStartupManager : Form
     {
@@ -113,18 +108,18 @@ namespace Quasar.Server.Forms
         {
             lstStartupItems.Groups.Add(
                 new ListViewGroup("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
-                    {Tag = StartupType.LocalMachineRun});
+                { Tag = StartupType.LocalMachineRun });
             lstStartupItems.Groups.Add(
                 new ListViewGroup("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce")
-                    {Tag = StartupType.LocalMachineRunOnce});
+                { Tag = StartupType.LocalMachineRunOnce });
             lstStartupItems.Groups.Add(
                 new ListViewGroup("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
-                    {Tag = StartupType.CurrentUserRun});
+                { Tag = StartupType.CurrentUserRun });
             lstStartupItems.Groups.Add(
                 new ListViewGroup("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce")
-                    {Tag = StartupType.CurrentUserRunOnce});
+                { Tag = StartupType.CurrentUserRunOnce });
             lstStartupItems.Groups.Add(new ListViewGroup("%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")
-                {Tag = StartupType.StartMenu});
+            { Tag = StartupType.StartMenu });
         }
 
         /// <summary>
@@ -139,7 +134,7 @@ namespace Quasar.Server.Forms
             foreach (var item in startupItems)
             {
                 var i = lstStartupItems.Groups.Cast<ListViewGroup>().First(x => (StartupType)x.Tag == item.Type);
-                ListViewItem lvi = new ListViewItem(new[] {item.Name, item.Path}) {Group = i, Tag = item};
+                ListViewItem lvi = new ListViewItem(new[] { item.Name, item.Path }) { Group = i, Tag = item };
                 lstStartupItems.Items.Add(lvi);
             }
         }

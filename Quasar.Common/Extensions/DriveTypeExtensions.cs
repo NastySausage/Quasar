@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Quasar.Common.Extensions
+namespace Quasar.Common
 {
     public static class DriveTypeExtensions
     {

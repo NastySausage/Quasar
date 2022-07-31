@@ -1,10 +1,99 @@
-﻿using Quasar.Client.Helper;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Net;
+using System;
+using Newtonsoft.Json;
+using Quasar.Common;
 
-namespace Quasar.Client.IpGeoLocation
+namespace Quasar.Client
 {
+
+    /// <summary>
+    /// Stores the IP geolocation information.
+    /// </summary>
+    public class GeoInformation
+    {
+        public string IpAddress { get; set; }
+        public string Country { get; set; }
+        public string CountryCode { get; set; }
+        public string Timezone { get; set; }
+        public string Asn { get; set; }
+        public string Isp { get; set; }
+        public int ImageIndex { get; set; }
+    }
+    public class GeoResponse
+    {
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        [JsonProperty("data")]
+        public DataObject Data { get; set; }
+    }
+
+    public class DataObject
+    {
+        [JsonProperty("geo")]
+        public LocationData Geo { get; set; }
+    }
+    public class LocationData
+    {
+        [JsonProperty("host")]
+        public string Host;
+
+        [JsonProperty("ip")]
+        public string Ip;
+
+        [JsonProperty("rdns")]
+        public string Rdns;
+
+        [JsonProperty("asn")]
+        public int Asn;
+
+        [JsonProperty("isp")]
+        public string Isp;
+
+        [JsonProperty("country_name")]
+        public string CountryName;
+
+        [JsonProperty("country_code")]
+        public string CountryCode;
+
+        [JsonProperty("region_name")]
+        public string RegionName;
+
+        [JsonProperty("region_code")]
+        public string RegionCode;
+
+        [JsonProperty("city")]
+        public string City;
+
+        [JsonProperty("postal_code")]
+        public string PostalCode;
+
+        [JsonProperty("continent_name")]
+        public string ContinentName;
+
+        [JsonProperty("continent_code")]
+        public string ContinentCode;
+
+        [JsonProperty("latitude")]
+        public double Latitude;
+
+        [JsonProperty("longitude")]
+        public double Longitude;
+
+        [JsonProperty("metro_code")]
+        public object MetroCode;
+
+        [JsonProperty("timezone")]
+        public string Timezone;
+
+        [JsonProperty("datetime")]
+        public string Datetime;
+    }
     /// <summary>
     /// Class to retrieve the IP geolocation information.
     /// </summary>
@@ -90,7 +179,7 @@ namespace Quasar.Client.IpGeoLocation
                 {
                     using (Stream dataStream = response.GetResponseStream())
                     {
-                        var geoInfo = JsonHelper.Deserialize<GeoResponse>(dataStream);
+                        var geoInfo = JsonConvert.DeserializeObject<GeoResponse>(dataStream.ReadToEnd().GetString());
 
                         GeoInformation g = new GeoInformation
                         {
@@ -169,6 +258,49 @@ namespace Quasar.Client.IpGeoLocation
             }
 
             return wanIp;
+        }
+    }
+
+    /// <summary>
+    /// Factory to retrieve and cache the last IP geolocation information for <see cref="MINIMUM_VALID_TIME"/> minutes.
+    /// </summary>
+    public static class GeoInformationFactory
+    {
+        /// <summary>
+        /// Retriever used to get geolocation information about the WAN IP address.
+        /// </summary>
+        private static readonly GeoInformationRetriever Retriever = new GeoInformationRetriever();
+
+        /// <summary>
+        /// Used to cache the latest IP geolocation information.
+        /// </summary>
+        private static GeoInformation _geoInformation;
+
+        /// <summary>
+        /// Time of the last successful location retrieval.
+        /// </summary>
+        private static DateTime _lastSuccessfulLocation = new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// The minimum amount of minutes a successful IP geolocation retrieval is valid.
+        /// </summary>
+        private const int MINIMUM_VALID_TIME = 60 * 12;
+
+        /// <summary>
+        /// Gets the IP geolocation information, either cached or freshly retrieved if more than <see cref="MINIMUM_VALID_TIME"/> minutes have passed.
+        /// </summary>
+        /// <returns>The latest IP geolocation information.</returns>
+        public static GeoInformation GetGeoInformation()
+        {
+            var passedTime = new TimeSpan(DateTime.UtcNow.Ticks - _lastSuccessfulLocation.Ticks);
+
+            if (_geoInformation == null || passedTime.TotalMinutes > MINIMUM_VALID_TIME)
+            {
+                _geoInformation = Retriever.Retrieve();
+                _lastSuccessfulLocation = DateTime.UtcNow;
+            }
+
+            return _geoInformation;
         }
     }
 }

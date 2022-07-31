@@ -1,10 +1,7 @@
-﻿using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System.Collections.Generic;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with remote startup tasks.
@@ -56,7 +53,7 @@ namespace Quasar.Server.Messages
         /// <param name="item">Startup item to remove.</param>
         public void RemoveStartupItem(StartupItem item)
         {
-            _client.Send(new DoStartupItemRemove {StartupItem = item});
+            _client.Send(new DoStartupItemRemove { StartupItem = item });
         }
 
         /// <summary>
@@ -65,7 +62,7 @@ namespace Quasar.Server.Messages
         /// <param name="item">Startup item to add.</param>
         public void AddStartupItem(StartupItem item)
         {
-            _client.Send(new DoStartupItemAdd {StartupItem = item});
+            _client.Send(new DoStartupItemAdd { StartupItem = item });
         }
 
         private void Execute(ISender client, GetStartupItemsResponse message)

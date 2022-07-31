@@ -50,9 +50,7 @@
     <Compile Update="Controls\WordTextBox.Designer.cs">
       <DependentUpon>WordTextBox.cs</DependentUpon>
     </Compile>
-    <Compile Update="Forms\FrmCertificate.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\FrmCertificate.cs" />
     <Compile Update="Forms\FrmCertificate.Designer.cs">
       <DependentUpon>FrmCertificate.cs</DependentUpon>
     </Compile>

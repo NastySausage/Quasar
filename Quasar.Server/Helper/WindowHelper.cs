@@ -1,6 +1,4 @@
-﻿using Quasar.Server.Networking;
-
-namespace Quasar.Server.Helper
+﻿namespace Quasar.Server
 {
     public static class WindowHelper
     {

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
-using Quasar.Client.Extensions;
-using Quasar.Client.Helper;
-using Quasar.Common.Models;
+using Quasar.Common;
 using System;
 
 namespace Quasar.Client.Registry
@@ -348,7 +346,7 @@ namespace Quasar.Client.Registry
                     errorMsg = "You do not have write access to registry: " + keyPath + ", try running client as administrator";
                     return false;
                 }
-                
+
                 //Is not default value and does not exist
                 if (!RegistryKeyHelper.IsDefaultValue(value.Name) && !key.ContainsValue(value.Name))
                 {

@@ -1,6 +1,4 @@
-﻿using Quasar.Client.Config;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
+﻿using Quasar.Common;
 
 namespace Quasar.Client.Messages
 {

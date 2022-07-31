@@ -1,7 +1,6 @@
 ﻿using ProtoBuf;
-using Quasar.Common.Enums;
 
-namespace Quasar.Common.Models
+namespace Quasar.Common
 {
     [ProtoContract]
     public class TcpConnection

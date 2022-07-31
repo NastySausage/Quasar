@@ -1,10 +1,8 @@
-﻿using Quasar.Common.Helpers;
-using Quasar.Server.Helper;
-using Quasar.Server.Utilities;
+﻿using Quasar.Common;
 using System;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Extensions
+namespace Quasar.Server
 {
     public static class ListViewExtensions
     {
@@ -20,7 +18,7 @@ namespace Quasar.Server.Extensions
             if (PlatformHelper.RunningOnMono) return;
             for (int lngColumn = 0; lngColumn <= (targetListView.Columns.Count - 1); lngColumn++)
             {
-                NativeMethods.SendMessage(targetListView.Handle, SET_COLUMN_WIDTH, new IntPtr(lngColumn), AUTOSIZE_USEHEADER);
+                Win32.SendMessage(targetListView.Handle, SET_COLUMN_WIDTH, new IntPtr(lngColumn), AUTOSIZE_USEHEADER);
             }
         }
 

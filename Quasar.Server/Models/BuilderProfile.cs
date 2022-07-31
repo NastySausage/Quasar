@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace Quasar.Server.Models
+namespace Quasar.Server
 {
     public class BuilderProfile
     {
@@ -389,7 +389,7 @@ namespace Quasar.Server.Models
                     }
                     doc.AppendChild(doc.CreateElement("settings"));
                 }
-                
+
                 XmlElement root = doc.DocumentElement;
                 XmlNode oldNode = root.SelectSingleNode(@"/settings/" + pstrValueToRead);
                 if (oldNode == null) // create if not exist

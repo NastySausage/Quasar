@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows.Forms;
-using Microsoft.Win32;
-using Quasar.Common.Models;
-using Quasar.Common.Utilities;
+﻿using Microsoft.Win32;
+using Quasar.Common;
 using Quasar.Server.Enums;
+using System;
+using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRegValueEditWord : Form
     {
@@ -22,13 +21,13 @@ namespace Quasar.Server.Forms
 
             this.valueNameTxtBox.Text = value.Name;
 
-            if (value.Kind == RegistryValueKind.DWord) 
+            if (value.Kind == RegistryValueKind.DWord)
             {
                 this.Text = "Edit DWORD (32-bit) Value";
                 this.valueDataTxtBox.Type = WordType.DWORD;
                 this.valueDataTxtBox.Text = ByteConverter.ToUInt32(value.Data).ToString("x");
             }
-            else 
+            else
             {
                 this.Text = "Edit QWORD (64-bit) Value";
                 this.valueDataTxtBox.Type = WordType.QWORD;
@@ -41,7 +40,7 @@ namespace Quasar.Server.Forms
             if (valueDataTxtBox.IsHexNumber == radioHexa.Checked)
                 return;
 
-            if(valueDataTxtBox.IsConversionValid() || IsOverridePossible())
+            if (valueDataTxtBox.IsConversionValid() || IsOverridePossible())
                 valueDataTxtBox.IsHexNumber = radioHexa.Checked;
             else
                 radioDecimal.Checked = true;

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Security.Cryptography;
-using System.IO;
+using System.Text;
 
-namespace Quasar.Common.Extensions
+namespace Quasar.Common
 {
     public static class StreamExtensions
     {
@@ -24,6 +21,10 @@ namespace Quasar.Common.Extensions
         {
             using (HashAlgorithm algorithm = SHA256.Create())
                 return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+        public static string GetString(this byte[] utf8Data)
+        {
+            return Encoding.UTF8.GetString(utf8Data);
         }
     }
 }

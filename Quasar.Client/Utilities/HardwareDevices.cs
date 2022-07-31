@@ -1,12 +1,11 @@
-﻿using Quasar.Common.Cryptography;
-using Quasar.Common.Helpers;
+﻿using Quasar.Common;
 using System;
 using System.Linq;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace Quasar.Client.IO
+namespace Quasar.Client
 {
     /// <summary>
     /// Provides access to retrieve information about the used hardware devices.

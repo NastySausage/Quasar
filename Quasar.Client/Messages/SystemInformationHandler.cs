@@ -1,9 +1,5 @@
-﻿using Quasar.Client.Helper;
-using Quasar.Client.IO;
-using Quasar.Client.IpGeoLocation;
-using Quasar.Client.User;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
+﻿using Quasar.Client;
+using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;

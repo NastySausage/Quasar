@@ -1,12 +1,5 @@
-﻿using Quasar.Client.Networking;
+﻿using Quasar.Client;
 using Quasar.Common;
-using Quasar.Common.Enums;
-using Quasar.Common.Extensions;
-using Quasar.Common.Helpers;
-using Quasar.Common.IO;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -35,7 +28,7 @@ namespace Quasar.Client.Messages
             _token = _tokenSource.Token;
         }
 
-        private void OnClientStateChange(Networking.Client s, bool connected)
+        private void OnClientStateChange(Client s, bool connected)
         {
             switch (connected)
             {
@@ -298,7 +291,7 @@ namespace Quasar.Client.Messages
                     if (File.Exists(filePath))
                     {
                         // delete existing file
-                        NativeMethods.DeleteFile(filePath);
+                        Win32.DeleteFile(filePath);
                     }
 
                     _activeTransfers[message.Id] = new FileSplit(filePath, FileAccess.Write);

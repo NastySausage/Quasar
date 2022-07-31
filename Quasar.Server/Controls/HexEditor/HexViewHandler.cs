@@ -8,26 +8,26 @@ namespace Quasar.Server.Controls.HexEditor
     {
         #region Fields
 
-        bool _isEditing;
+        private bool _isEditing;
 
         /// <summary>
         /// Contains info about how to 
         /// present the hex values 
         /// (Upper or Lower case)
         /// </summary>
-        string _hexType = "X2";
+        private string _hexType = "X2";
 
         /// <summary>
         /// Contains the boundary for one single
         /// hexa value that is visible
         /// </summary>
-        Rectangle _recHexValue;
+        private Rectangle _recHexValue;
 
         /// <summary>
         /// Contains the format of the hexadecimal
         /// strings that are presented
         /// </summary>
-        StringFormat _stringFormat;
+        private StringFormat _stringFormat;
 
         private HexEditor _editor;
 

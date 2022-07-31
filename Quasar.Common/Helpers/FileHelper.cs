@@ -1,9 +1,8 @@
-﻿using Quasar.Common.Cryptography;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Quasar.Common.Helpers
+namespace Quasar.Common
 {
     public static class FileHelper
     {
@@ -67,7 +66,7 @@ namespace Quasar.Common.Helpers
         /// <returns>Returns <value>true</value> if the deletion was successful, otherwise <value>false</value>.</returns>
         public static bool DeleteZoneIdentifier(string filePath)
         {
-            return NativeMethods.DeleteFile(filePath + ":Zone.Identifier");
+            return Win32.DeleteFile(filePath + ":Zone.Identifier");
         }
 
         /// <summary>

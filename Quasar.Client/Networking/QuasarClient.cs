@@ -1,18 +1,10 @@
-﻿using Quasar.Client.Config;
-using Quasar.Client.Helper;
-using Quasar.Client.IO;
-using Quasar.Client.IpGeoLocation;
-using Quasar.Client.User;
-using Quasar.Common.DNS;
-using Quasar.Common.Helpers;
-using Quasar.Common.Messages;
-using Quasar.Common.Utilities;
+﻿using Quasar.Common;
 using System;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
-namespace Quasar.Client.Networking
+namespace Quasar.Client
 {
     public class QuasarClient : Client, IDisposable
     {
@@ -66,25 +58,11 @@ namespace Quasar.Client.Networking
             // TODO: do not re-use object
             while (!_token.IsCancellationRequested)
             {
-                if (!Connected)
-                {
-                    Host host = _hosts.GetNextHost();
-                    Connect(host.IpAddress, host.Port);
-                }
-
-                while (Connected) // hold client open
-                {
-                    try
-                    {
-                        _token.WaitHandle.WaitOne(1000);
-                    }
-                    catch (Exception e) when (e is NullReferenceException || e is ObjectDisposedException)
-                    {
-                        Disconnect();
-                        return;
-                    }
-                }
-
+                Host host = _hosts.GetNextHost();
+                // Console.WriteLine(host.IpAddress+":"+host.Port);
+                ReaderLoop(host.IpAddress, host.Port);
+                Disconnect();
+                _token.WaitHandle.WaitOne(1000);
                 if (_token.IsCancellationRequested)
                 {
                     Disconnect();
@@ -101,7 +79,7 @@ namespace Quasar.Client.Networking
             {
                 if (message.GetType() == typeof(ClientIdentificationResult))
                 {
-                    var reply = (ClientIdentificationResult) message;
+                    var reply = (ClientIdentificationResult)message;
                     _identified = reply.Result;
                 }
                 return;
@@ -112,7 +90,7 @@ namespace Quasar.Client.Networking
 
         private void OnClientFail(Client client, Exception ex)
         {
-            Debug.WriteLine("Client Fail - Exception Message: " + ex.Message);
+            // Console.WriteLine("Client Fail - Exception Message: " + ex);
             client.Disconnect();
         }
 

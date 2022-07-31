@@ -1,12 +1,10 @@
-﻿using Quasar.Server.Networking;
-using Quasar.Server.Utilities;
+﻿using Quasar.Server.Utilities;
 using System;
 using System.Globalization;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using Quasar.Server.Models;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmSettings : Form
     {
@@ -59,7 +57,7 @@ namespace Quasar.Server.Forms
             {
                 try
                 {
-                    if(chkNoIPIntegration.Checked)
+                    if (chkNoIPIntegration.Checked)
                         NoIpUpdater.Start();
                     _listenServer.Listen(port, chkIPv6Support.Checked, chkUseUpnp.Checked);
                     ToggleListenerSettings(false);
@@ -145,7 +143,7 @@ namespace Quasar.Server.Forms
 
         private void ShowPassword(bool show = true)
         {
-            txtNoIPPass.PasswordChar = (show) ? (char)0 : (char)'●';
+            txtNoIPPass.PasswordChar = (show) ? (char)0 : '●';
         }
 
         private void chkShowPassword_CheckedChanged(object sender, EventArgs e)

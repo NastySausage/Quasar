@@ -1,9 +1,4 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Server.Extensions;
-using Quasar.Server.Messages;
-using Quasar.Server.Models;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using Quasar.Server.Utilities;
 using System;
 using System.Collections.Generic;
@@ -14,7 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmMain : Form
     {
@@ -63,14 +58,14 @@ namespace Quasar.Server.Forms
             _titleUpdateRunning = true;
             try
             {
-                this.Invoke((MethodInvoker) delegate
-                {
-                    int selected = lstClients.SelectedItems.Count;
-                    this.Text = (selected > 0)
-                        ? string.Format("Quasar - Connected: {0} [Selected: {1}]", ListenServer.ConnectedClients.Length,
-                            selected)
-                        : string.Format("Quasar - Connected: {0}", ListenServer.ConnectedClients.Length);
-                });
+                this.Invoke((MethodInvoker)delegate
+               {
+                   int selected = lstClients.SelectedItems.Count;
+                   this.Text = (selected > 0)
+                       ? string.Format("Quasar - Connected: {0} [Selected: {1}]", ListenServer.ConnectedClients.Length,
+                           selected)
+                       : string.Format("Quasar - Connected: {0}", ListenServer.ConnectedClients.Length);
+               });
             }
             catch (Exception)
             {
@@ -168,16 +163,16 @@ namespace Quasar.Server.Forms
             UpdateWindowTitle();
         }
 
-        private void ServerState(Networking.Server server, bool listening, ushort port)
+        private void ServerState(Server server, bool listening, ushort port)
         {
             try
             {
-                this.Invoke((MethodInvoker) delegate
-                {
-                    if (!listening)
-                        lstClients.Items.Clear();
-                    listenToolStripStatusLabel.Text = listening ? string.Format("Listening on port {0}.", port) : "Not listening.";
-                });
+                this.Invoke((MethodInvoker)delegate
+               {
+                   if (!listening)
+                       lstClients.Items.Clear();
+                   listenToolStripStatusLabel.Text = listening ? string.Format("Listening on port {0}.", port) : "Not listening.";
+               });
                 UpdateWindowTitle();
             }
             catch (InvalidOperationException)
@@ -273,12 +268,12 @@ namespace Quasar.Server.Forms
 
             try
             {
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    var item = GetListViewItemByClient(client);
-                    if (item != null)
-                        item.ToolTipText = text;
-                });
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   var item = GetListViewItemByClient(client);
+                   if (item != null)
+                       item.ToolTipText = text;
+               });
             }
             catch (InvalidOperationException)
             {
@@ -301,15 +296,16 @@ namespace Quasar.Server.Forms
                     " " + client.EndPoint.Address, client.Value.Tag,
                     client.Value.UserAtPc, client.Value.Version, "Connected", "Active", client.Value.CountryWithCode,
                     client.Value.OperatingSystem, client.Value.AccountType
-                }) { Tag = client, ImageIndex = client.Value.ImageIndex };
+                })
+                { Tag = client, ImageIndex = client.Value.ImageIndex };
 
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    lock (_lockClients)
-                    {
-                        lstClients.Items.Add(lvi);
-                    }
-                });
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   lock (_lockClients)
+                   {
+                       lstClients.Items.Add(lvi);
+                   }
+               });
 
                 UpdateWindowTitle();
             }
@@ -328,18 +324,18 @@ namespace Quasar.Server.Forms
 
             try
             {
-                lstClients.Invoke((MethodInvoker) delegate
-                {
-                    lock (_lockClients)
-                    {
-                        foreach (ListViewItem lvi in lstClients.Items.Cast<ListViewItem>()
-                            .Where(lvi => lvi != null && client.Equals(lvi.Tag)))
-                        {
-                            lvi.Remove();
-                            break;
-                        }
-                    }
-                });
+                lstClients.Invoke((MethodInvoker)delegate
+               {
+                   lock (_lockClients)
+                   {
+                       foreach (ListViewItem lvi in lstClients.Items.Cast<ListViewItem>()
+                           .Where(lvi => lvi != null && client.Equals(lvi.Tag)))
+                       {
+                           lvi.Remove();
+                           break;
+                       }
+                   }
+               });
                 UpdateWindowTitle();
             }
             catch (InvalidOperationException)
@@ -385,11 +381,11 @@ namespace Quasar.Server.Forms
 
             ListViewItem itemClient = null;
 
-            lstClients.Invoke((MethodInvoker) delegate
-            {
-                itemClient = lstClients.Items.Cast<ListViewItem>()
-                    .FirstOrDefault(lvi => lvi != null && client.Equals(lvi.Tag));
-            });
+            lstClients.Invoke((MethodInvoker)delegate
+           {
+               itemClient = lstClients.Items.Cast<ListViewItem>()
+                   .FirstOrDefault(lvi => lvi != null && client.Equals(lvi.Tag));
+           });
 
             return itemClient;
         }
@@ -437,7 +433,7 @@ namespace Quasar.Server.Forms
                 this.Invoke((MethodInvoker)delegate
                 {
                     if (c == null || c.Value == null) return;
-                    
+
                     notifyIcon.ShowBalloonTip(4000, string.Format("Client connected from {0}!", c.Value.Country),
                         string.Format("IP Address: {0}\nOperating System: {1}", c.EndPoint.Address.ToString(),
                         c.Value.OperatingSystem), ToolTipIcon.Info);
@@ -614,7 +610,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Shutdown});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Shutdown });
             }
         }
 
@@ -622,7 +618,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Restart});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Restart });
             }
         }
 
@@ -630,7 +626,7 @@ namespace Quasar.Server.Forms
         {
             foreach (Client c in GetSelectedClients())
             {
-                c.Send(new DoShutdownAction {Action = ShutdownAction.Standby});
+                c.Send(new DoShutdownAction { Action = ShutdownAction.Standby });
             }
         }
 

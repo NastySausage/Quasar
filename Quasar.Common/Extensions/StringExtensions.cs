@@ -1,7 +1,4 @@
-﻿using Quasar.Common.Cryptography;
-using Quasar.Common.Enums;
-
-namespace Quasar.Common.Extensions
+﻿namespace Quasar.Common
 {
     public static class StringExtensions
     {

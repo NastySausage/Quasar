@@ -1,12 +1,11 @@
-﻿using Quasar.Common.Cryptography;
-using Quasar.Common.Messages;
+﻿using Quasar.Common;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Quasar.Server.Networking
+namespace Quasar.Server
 {
     public class QuasarServer : Server
     {
@@ -99,12 +98,12 @@ namespace Quasar.Server.Networking
         {
             if (!client.Identified)
             {
-                if (message.GetType() == typeof (ClientIdentification))
+                if (message.GetType() == typeof(ClientIdentification))
                 {
-                    client.Identified = IdentifyClient(client, (ClientIdentification) message);
+                    client.Identified = IdentifyClient(client, (ClientIdentification)message);
                     if (client.Identified)
                     {
-                        client.Send(new ClientIdentificationResult {Result = true}); // finish handshake
+                        client.Send(new ClientIdentificationResult { Result = true }); // finish handshake
                         OnClientConnected(client);
                     }
                     else
@@ -150,7 +149,7 @@ namespace Quasar.Server.Networking
             {
                 var rsa = ServerCertificate.GetRSAPublicKey();
                 return rsa.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(packet.EncryptionKey)),
-                     packet.Signature, HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
+                     packet.Signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             }
             catch (Exception)
             {

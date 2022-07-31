@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Windows.Forms;
-using Quasar.Common.Models;
-using Quasar.Common.Utilities;
-using Quasar.Server.Registry;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRegValueEditString : Form
     {

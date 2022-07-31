@@ -1,4 +1,4 @@
-﻿using Quasar.Common.Messages;
+﻿using Quasar.Common;
 
 namespace Quasar.Client.Messages
 {

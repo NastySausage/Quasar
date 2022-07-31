@@ -1,12 +1,8 @@
-﻿using Quasar.Common.Messages;
-using Quasar.Common.Messages.ReverseProxy;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
-using Quasar.Server.ReverseProxy;
+﻿using Quasar.Common;
 using System;
 using System.Linq;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with the remote reverse proxy.
@@ -97,12 +93,12 @@ namespace Quasar.Server.Messages
             socksClient?.Disconnect();
         }
 
-        void socksServer_onUpdateConnection(ReverseProxyClient proxyClient)
+        private void socksServer_onUpdateConnection(ReverseProxyClient proxyClient)
         {
             OnReport(_socksServer.OpenConnections);
         }
 
-        void socksServer_onConnectionEstablished(ReverseProxyClient proxyClient)
+        private void socksServer_onConnectionEstablished(ReverseProxyClient proxyClient)
         {
             OnReport(_socksServer.OpenConnections);
         }

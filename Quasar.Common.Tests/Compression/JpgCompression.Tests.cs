@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Quasar.Common.Video.Compression;
 using System;
 using System.Drawing;
 

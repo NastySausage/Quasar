@@ -1,6 +1,4 @@
-﻿using Quasar.Common.Networking;
-
-namespace Quasar.Common.Messages
+﻿namespace Quasar.Common
 {
     /// <summary>
     /// Provides basic functionality to process messages.

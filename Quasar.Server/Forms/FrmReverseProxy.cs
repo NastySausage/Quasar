@@ -1,16 +1,10 @@
-﻿using Quasar.Common.Helpers;
-using Quasar.Common.Messages;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Models;
-using Quasar.Server.Networking;
-using Quasar.Server.ReverseProxy;
+﻿using Quasar.Common;
 using System;
 using System.Globalization;
 using System.Net.Sockets;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmReverseProxy : Form
     {
@@ -192,7 +186,8 @@ namespace Quasar.Server.Forms
                         StringHelper.GetHumanReadableFileSize(connection.LengthReceived),
                         StringHelper.GetHumanReadableFileSize(connection.LengthSent),
                         connection.Type.ToString()
-                    }) { Tag = connection };
+                    })
+                    { Tag = connection };
                 }
             }
         }

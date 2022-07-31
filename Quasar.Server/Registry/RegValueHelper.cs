@@ -1,9 +1,8 @@
 ﻿using Microsoft.Win32;
-using Quasar.Common.Models;
-using Quasar.Common.Utilities;
+using Quasar.Common;
 using System;
 
-namespace Quasar.Server.Registry
+namespace Quasar.Server
 {
     public class RegValueHelper
     {

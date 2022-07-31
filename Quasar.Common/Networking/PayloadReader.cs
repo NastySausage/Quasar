@@ -1,9 +1,8 @@
 ﻿using ProtoBuf;
-using Quasar.Common.Messages;
 using System;
 using System.IO;
 
-namespace Quasar.Common.Networking
+namespace Quasar.Common
 {
     public class PayloadReader : MemoryStream
     {
@@ -44,7 +43,7 @@ namespace Quasar.Common.Networking
         /// <returns>The deserialized message of the payload.</returns>
         public IMessage ReadMessage()
         {
-            ReadInteger();
+            // ReadInteger();
             /* Length prefix is ignored here and already handled in Client class,
              * it would cause to much trouble to check here for split or not fully
              * received packets.

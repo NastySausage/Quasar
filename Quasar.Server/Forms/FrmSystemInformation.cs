@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Quasar.Common.Messages;
-using Quasar.Server.Extensions;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmSystemInformation : Form
     {
@@ -111,7 +107,7 @@ namespace Quasar.Server.Forms
 
             foreach (var info in infos)
             {
-                var lvi = new ListViewItem(new[] {info.Item1, info.Item2});
+                var lvi = new ListViewItem(new[] { info.Item1, info.Item2 });
                 lstSystem.Items.Add(lvi);
             }
 
@@ -163,7 +159,7 @@ namespace Quasar.Server.Forms
         private void AddBasicSystemInformation()
         {
             ListViewItem lvi =
-                new ListViewItem(new[] {"Operating System", _connectClient.Value.OperatingSystem});
+                new ListViewItem(new[] { "Operating System", _connectClient.Value.OperatingSystem });
             lstSystem.Items.Add(lvi);
             lvi =
                 new ListViewItem(new[]
@@ -172,7 +168,7 @@ namespace Quasar.Server.Forms
                     (_connectClient.Value.OperatingSystem.Contains("32 Bit")) ? "x86 (32 Bit)" : "x64 (64 Bit)"
                 });
             lstSystem.Items.Add(lvi);
-            lvi = new ListViewItem(new[] {"", "Getting more information..."});
+            lvi = new ListViewItem(new[] { "", "Getting more information..." });
             lstSystem.Items.Add(lvi);
         }
     }

@@ -1,11 +1,8 @@
-﻿using Quasar.Client.Helper;
-using Quasar.Client.Networking;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
+﻿using Quasar.Common;
 using System;
 using System.Threading;
 
-namespace Quasar.Client.User
+namespace Quasar.Client
 {
     /// <summary>
     /// Provides user activity detection and sends <see cref="SetUserStatus"/> messages on change.
@@ -44,7 +41,7 @@ namespace Quasar.Client.User
             client.ClientState += OnClientStateChange;
         }
 
-        private void OnClientStateChange(Networking.Client s, bool connected)
+        private void OnClientStateChange(Client s, bool connected)
         {
             // reset user status
             if (connected)

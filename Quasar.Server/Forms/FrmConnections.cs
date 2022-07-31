@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmConnections : Form
     {

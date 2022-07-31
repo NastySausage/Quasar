@@ -1,10 +1,8 @@
-﻿using Quasar.Common.Messages;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with the remote system information.

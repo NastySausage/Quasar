@@ -1,4 +1,4 @@
-﻿namespace Quasar.Common.Messages
+﻿namespace Quasar.Common
 {
     public interface IMessage
     {

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Quasar.Common.DNS
+namespace Quasar.Common
 {
     public class HostsConverter
     {
@@ -27,7 +26,7 @@ namespace Quasar.Common.DNS
             return hostsList;
         }
 
-        public  string ListToRawHosts(IList<Host> hosts)
+        public string ListToRawHosts(IList<Host> hosts)
         {
             StringBuilder rawHosts = new StringBuilder();
 

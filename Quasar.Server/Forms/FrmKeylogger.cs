@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using Quasar.Common.Messages;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmKeylogger : Form
     {
@@ -154,7 +151,7 @@ namespace Quasar.Server.Forms
 
             foreach (FileInfo file in iFiles)
             {
-                lstLogs.Items.Add(new ListViewItem {Text = file.Name});
+                lstLogs.Items.Add(new ListViewItem { Text = file.Name });
             }
         }
     }

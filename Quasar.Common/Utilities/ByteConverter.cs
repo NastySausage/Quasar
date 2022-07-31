@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quasar.Common.Utilities
+namespace Quasar.Common
 {
     public class ByteConverter
     {
@@ -85,7 +85,7 @@ namespace Quasar.Common.Utilities
         {
             List<byte> bytes = new List<byte>();
 
-            foreach(string str in strings)
+            foreach (string str in strings)
             {
                 bytes.AddRange(StringToBytes(str));
                 bytes.AddRange(GetNullBytes());
@@ -96,7 +96,7 @@ namespace Quasar.Common.Utilities
 
         private static string BytesToString(byte[] bytes)
         {
-            int nrChars = (int)Math.Ceiling((float)bytes.Length / (float)sizeof(char));
+            int nrChars = (int)Math.Ceiling(bytes.Length / (float)sizeof(char));
             char[] chars = new char[nrChars];
             Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             return new string(chars);

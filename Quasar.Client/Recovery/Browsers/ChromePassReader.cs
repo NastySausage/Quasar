@@ -1,4 +1,4 @@
-﻿using Quasar.Common.Models;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;

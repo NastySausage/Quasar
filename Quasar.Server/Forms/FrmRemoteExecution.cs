@@ -1,15 +1,10 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Models;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRemoteExecution : Form
     {
@@ -45,14 +40,16 @@ namespace Quasar.Server.Forms
             {
                 var remoteExecutionMessageHandler = new RemoteExecutionMessageHandler
                 {
-                    FileHandler = new FileManagerHandler(client), TaskHandler = new TaskManagerHandler(client)
+                    FileHandler = new FileManagerHandler(client),
+                    TaskHandler = new TaskManagerHandler(client)
                 };
 
                 var lvi = new ListViewItem(new[]
                 {
                     $"{client.Value.Username}@{client.Value.PcName} [{client.EndPoint.Address}:{client.EndPoint.Port}]",
                     "Waiting..."
-                }) {Tag = remoteExecutionMessageHandler};
+                })
+                { Tag = remoteExecutionMessageHandler };
 
                 lstTransfers.Items.Add(lvi);
                 _remoteExecutionMessageHandlers.Add(remoteExecutionMessageHandler);
@@ -159,11 +156,11 @@ namespace Quasar.Server.Forms
         {
             for (var i = 0; i < lstTransfers.Items.Count; i++)
             {
-                var handler = (RemoteExecutionMessageHandler) lstTransfers.Items[i].Tag;
+                var handler = (RemoteExecutionMessageHandler)lstTransfers.Items[i].Tag;
 
                 if (handler.FileHandler.Equals(sender as FileManagerHandler) || handler.TaskHandler.Equals(sender as TaskManagerHandler))
                 {
-                    lstTransfers.Items[i].SubItems[(int) TransferColumn.Status].Text = transfer.Status;
+                    lstTransfers.Items[i].SubItems[(int)TransferColumn.Status].Text = transfer.Status;
 
                     if (transfer.Status == "Completed")
                     {
@@ -188,7 +185,7 @@ namespace Quasar.Server.Forms
 
                 if (handler.FileHandler.Equals(sender as FileManagerHandler) || handler.TaskHandler.Equals(sender as TaskManagerHandler))
                 {
-                    lstTransfers.Items[i].SubItems[(int) TransferColumn.Status].Text = message;
+                    lstTransfers.Items[i].SubItems[(int)TransferColumn.Status].Text = message;
                     return;
                 }
             }

@@ -1,8 +1,8 @@
-﻿using Quasar.Common.Helpers;
+﻿using Quasar.Common;
 using System;
 using System.Management;
 
-namespace Quasar.Client.Helper
+namespace Quasar.Client
 {
     public static class SystemHelper
     {

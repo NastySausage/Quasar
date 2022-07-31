@@ -1,9 +1,8 @@
-﻿using Quasar.Common.IO;
-using Quasar.Common.Utilities;
+﻿using Quasar.Common;
 using Quasar.Server.Enums;
 using System;
 
-namespace Quasar.Server.Models
+namespace Quasar.Server
 {
     public class FileTransfer : IEquatable<FileTransfer>
     {
@@ -35,8 +34,14 @@ namespace Quasar.Server.Models
         {
             return new FileTransfer()
             {
-                Id = Id, Type = Type, Size = Size, TransferredSize = TransferredSize, LocalPath = LocalPath,
-                RemotePath = RemotePath, Status = Status, FileSplit = FileSplit
+                Id = Id,
+                Type = Type,
+                Size = Size,
+                TransferredSize = TransferredSize,
+                LocalPath = LocalPath,
+                RemotePath = RemotePath,
+                Status = Status,
+                FileSplit = FileSplit
             };
         }
 

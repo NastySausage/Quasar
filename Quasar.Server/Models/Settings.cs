@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace Quasar.Server.Models
+namespace Quasar.Server
 {
     public static class Settings
     {
@@ -179,7 +179,7 @@ namespace Quasar.Server.Models
         private static string ReadValueSafe(string pstrValueToRead, string defaultValue = "")
         {
             string value = ReadValue(pstrValueToRead);
-            return (!string.IsNullOrEmpty(value)) ? value: defaultValue;
+            return (!string.IsNullOrEmpty(value)) ? value : defaultValue;
         }
 
         private static void WriteValue(string pstrValueToRead, string pstrValueToWrite)

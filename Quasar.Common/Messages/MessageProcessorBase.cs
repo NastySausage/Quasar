@@ -1,8 +1,7 @@
-﻿using Quasar.Common.Networking;
-using System;
+﻿using System;
 using System.Threading;
 
-namespace Quasar.Common.Messages
+namespace Quasar.Common
 {
     /// <summary>
     /// Provides a MessageProcessor implementation that provides progress report callbacks.

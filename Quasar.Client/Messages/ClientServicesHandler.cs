@@ -1,11 +1,8 @@
-﻿using Quasar.Client.Config;
-using Quasar.Client.Networking;
+﻿using Quasar.Client;
 using Quasar.Client.Setup;
-using Quasar.Client.User;
+using Quasar.Client;
 using Quasar.Client.Utilities;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
+using Quasar.Common;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -74,7 +71,7 @@ namespace Quasar.Client.Messages
 
         private void Execute(ISender client, DoClientReconnect message)
         {
-            _client.Disconnect();
+            _client.Disconnect("Service");
         }
 
         private void Execute(ISender client, DoAskElevate message)
@@ -98,7 +95,7 @@ namespace Quasar.Client.Messages
                 }
                 catch
                 {
-                    client.Send(new SetStatus {Message = "User refused the elevation request."});
+                    client.Send(new SetStatus { Message = "User refused the elevation request." });
                     _application.ApplicationMutex = new SingleInstanceMutex(Settings.MUTEX);  // re-grab the mutex
                     return;
                 }

@@ -2,17 +2,16 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Quasar.Common.Extensions;
 
-namespace Quasar.Common.Cryptography
+namespace Quasar.Common
 {
     public class Aes256
     {
-        private readonly Aes _aes=Aes.Create();
+        private readonly Aes _aes = Aes.Create();
         public Aes256(string key)
         {
             _aes.Key = key.GetSHA256Hash();
-            _aes.IV=new byte[]{ 7,203,246,228,146,184,75,125,240,194,101,35,171,25,206,4};
+            _aes.IV=new byte[] { 7, 203, 246, 228, 146, 184, 75, 125, 240, 194, 101, 35, 171, 25, 206, 4 };
         }
         public byte[] Encrypt(byte[] data)
         {

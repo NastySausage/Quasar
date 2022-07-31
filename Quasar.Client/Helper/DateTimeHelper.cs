@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quasar.Client.Helper
+namespace Quasar.Client
 {
     public static class DateTimeHelper
     {

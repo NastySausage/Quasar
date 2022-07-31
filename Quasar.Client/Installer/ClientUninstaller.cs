@@ -1,6 +1,4 @@
-﻿using Quasar.Client.Config;
-using Quasar.Client.IO;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;

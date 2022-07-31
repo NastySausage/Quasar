@@ -1,7 +1,5 @@
-﻿using Quasar.Client.IO;
-using Quasar.Client.Networking;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
+﻿using Quasar.Client;
+using Quasar.Common;
 using System;
 
 namespace Quasar.Client.Messages
@@ -36,7 +34,7 @@ namespace Quasar.Client.Messages
         /// </summary>
         /// <param name="s">The client which changed its state.</param>
         /// <param name="connected">The new connection state of the client.</param>
-        private void OnClientStateChange(Networking.Client s, bool connected)
+        private void OnClientStateChange(Client s, bool connected)
         {
             // close shell on client disconnection
             if (!connected)

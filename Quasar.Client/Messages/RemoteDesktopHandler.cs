@@ -1,9 +1,4 @@
-﻿using Quasar.Client.Helper;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
-using Quasar.Common.Video;
-using Quasar.Common.Video.Codecs;
+﻿using Quasar.Common;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -182,7 +177,7 @@ namespace Quasar.Client.Messages
 
         private void Execute(ISender client, GetMonitors message)
         {
-            client.Send(new GetMonitorsResponse {Number = Screen.AllScreens.Length});
+            client.Send(new GetMonitorsResponse { Number = Screen.AllScreens.Length });
         }
 
         /// <summary>

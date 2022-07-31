@@ -1,11 +1,9 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Helpers;
-using Quasar.Common.Models;
+﻿using Quasar.Common;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmStartupAdd : Form
     {
@@ -46,7 +44,7 @@ namespace Quasar.Server.Forms
         private void btnAdd_Click(object sender, EventArgs e)
         {
             StartupItem = new StartupItem
-                {Name = txtName.Text, Path = txtPath.Text, Type = (StartupType) cmbType.SelectedIndex};
+            { Name = txtName.Text, Path = txtPath.Text, Type = (StartupType)cmbType.SelectedIndex };
 
             this.DialogResult = DialogResult.OK;
             this.Close();

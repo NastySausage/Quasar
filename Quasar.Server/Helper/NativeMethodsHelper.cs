@@ -1,7 +1,7 @@
-﻿using System;
-using Quasar.Server.Utilities;
+﻿using Quasar.Common;
+using System;
 
-namespace Quasar.Server.Helper
+namespace Quasar.Server
 {
     public static class NativeMethodsHelper
     {
@@ -13,23 +13,23 @@ namespace Quasar.Server.Helper
 
         public static int MakeWin32Long(short wLow, short wHigh)
         {
-            return (int)wLow << 16 | (int)(short)wHigh;
+            return wLow << 16 | (int)wHigh;
         }
 
         public static void SetItemState(IntPtr handle, int itemIndex, int mask, int value)
         {
-            NativeMethods.LVITEM lvItem = new NativeMethods.LVITEM
+            Win32.LVITEM lvItem = new Win32.LVITEM
             {
                 stateMask = mask,
                 state = value
             };
 
-            NativeMethods.SendMessageListViewItem(handle, LVM_SETITEMSTATE, new IntPtr(itemIndex), ref lvItem);
+            Win32.SendMessageListViewItem(handle, LVM_SETITEMSTATE, new IntPtr(itemIndex), ref lvItem);
         }
 
         public static void ScrollToBottom(IntPtr handle)
         {
-            NativeMethods.SendMessage(handle, WM_VSCROLL, SB_PAGEBOTTOM, IntPtr.Zero);
+            Win32.SendMessage(handle, WM_VSCROLL, SB_PAGEBOTTOM, IntPtr.Zero);
         }
     }
 }

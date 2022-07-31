@@ -1,9 +1,5 @@
 ﻿using Microsoft.Win32;
-using Quasar.Client.Extensions;
-using Quasar.Client.Helper;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
+using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +35,7 @@ namespace Quasar.Client.Messages
         {
             try
             {
-                List<Common.Models.StartupItem> startupItems = new List<Common.Models.StartupItem>();
+                List<StartupItem> startupItems = new List<StartupItem>();
 
                 using (var key = RegistryKeyHelper.OpenReadonlySubKey(RegistryHive.LocalMachine, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"))
                 {
@@ -47,7 +43,7 @@ namespace Quasar.Client.Messages
                     {
                         foreach (var item in key.GetKeyValues())
                         {
-                            startupItems.Add(new Common.Models.StartupItem
+                            startupItems.Add(new StartupItem
                             { Name = item.Item1, Path = item.Item2, Type = StartupType.LocalMachineRun });
                         }
                     }
@@ -58,7 +54,7 @@ namespace Quasar.Client.Messages
                     {
                         foreach (var item in key.GetKeyValues())
                         {
-                            startupItems.Add(new Common.Models.StartupItem
+                            startupItems.Add(new StartupItem
                             { Name = item.Item1, Path = item.Item2, Type = StartupType.LocalMachineRunOnce });
                         }
                     }
@@ -69,7 +65,7 @@ namespace Quasar.Client.Messages
                     {
                         foreach (var item in key.GetKeyValues())
                         {
-                            startupItems.Add(new Common.Models.StartupItem
+                            startupItems.Add(new StartupItem
                             { Name = item.Item1, Path = item.Item2, Type = StartupType.CurrentUserRun });
                         }
                     }
@@ -80,7 +76,7 @@ namespace Quasar.Client.Messages
                     {
                         foreach (var item in key.GetKeyValues())
                         {
-                            startupItems.Add(new Common.Models.StartupItem
+                            startupItems.Add(new StartupItem
                             { Name = item.Item1, Path = item.Item2, Type = StartupType.CurrentUserRunOnce });
                         }
                     }
@@ -89,7 +85,7 @@ namespace Quasar.Client.Messages
                 {
                     var files = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Startup)).GetFiles();
 
-                    startupItems.AddRange(files.Where(file => file.Name != "desktop.ini").Select(file => new Common.Models.StartupItem
+                    startupItems.AddRange(files.Where(file => file.Name != "desktop.ini").Select(file => new StartupItem
                     { Name = file.Name, Path = file.FullName, Type = StartupType.StartMenu }));
                 }
 

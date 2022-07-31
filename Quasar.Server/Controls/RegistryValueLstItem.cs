@@ -1,24 +1,24 @@
-﻿using System.Windows.Forms;
-using Quasar.Common.Models;
-using Quasar.Server.Extensions;
-using Quasar.Server.Registry;
+﻿using Quasar.Common;
+using System.Windows.Forms;
 
-namespace Quasar.Server.Controls
+namespace Quasar.Server
 {
     public class RegistryValueLstItem : ListViewItem
     {
         private string _type { get; set; }
         private string _data { get; set; }
 
-        public string RegName {
+        public string RegName
+        {
             get { return this.Name; }
-            set 
-            { 
+            set
+            {
                 this.Name = value;
                 this.Text = RegValueHelper.GetName(value);
             }
         }
-        public string Type {
+        public string Type
+        {
             get { return _type; }
             set
             {
@@ -33,7 +33,8 @@ namespace Quasar.Server.Controls
             }
         }
 
-        public string Data {
+        public string Data
+        {
             get { return _data; }
             set
             {
@@ -41,7 +42,7 @@ namespace Quasar.Server.Controls
 
                 if (this.SubItems.Count < 3)
                     this.SubItems.Add(_data);
-                else 
+                else
                     this.SubItems[2].Text = _data;
             }
         }

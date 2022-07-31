@@ -1,20 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Utilities;
-using Quasar.Server.Controls;
-using Quasar.Server.Extensions;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
-using Quasar.Server.Registry;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRegistryEditor : Form
     {
@@ -143,7 +135,7 @@ namespace Quasar.Server.Forms
         {
             UnregisterMessageHandler();
         }
-        
+
         private void ShowErrorMessage(object sender, string errorMsg)
         {
             MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -225,7 +217,8 @@ namespace Quasar.Server.Forms
         {
             TreeNode parent = GetTreeNode(rootKey);
 
-            if (parent.Nodes.ContainsKey(subKey)) {
+            if (parent.Nodes.ContainsKey(subKey))
+            {
                 parent.Nodes.RemoveByKey(subKey);
             }
         }
@@ -273,7 +266,7 @@ namespace Quasar.Server.Forms
         {
             TreeNode key = GetTreeNode(keyPath);
 
-            if (key != null )
+            if (key != null)
             {
                 List<RegValueData> valuesFromNode = ((RegValueData[])key.Tag).ToList();
                 valuesFromNode.Add(value);
@@ -312,7 +305,7 @@ namespace Quasar.Server.Forms
                 {
                     var regValue = ((RegValueData[])key.Tag).First(item => item.Name == valueName);
 
-                    if(tvRegistryDirectory.SelectedNode == key)
+                    if (tvRegistryDirectory.SelectedNode == key)
                     {
                         var valueItem = lstRegistryValues.Items.Cast<RegistryValueLstItem>()
                                                      .SingleOrDefault(item => item.Name == valueName);
@@ -337,7 +330,7 @@ namespace Quasar.Server.Forms
                 if (tvRegistryDirectory.SelectedNode == key)
                 {
                     var valueItem = lstRegistryValues.Items.Cast<RegistryValueLstItem>()
-                                                     .SingleOrDefault(item => item.Name == oldName);              
+                                                     .SingleOrDefault(item => item.Name == oldName);
                     if (valueItem != null)
                         valueItem.RegName = newName;
                 }
@@ -499,7 +492,7 @@ namespace Quasar.Server.Forms
             this.deleteToolStripMenuItem2.Enabled = GetDeleteState();
         }
 
-        private void  CreateTreeViewMenuStrip()
+        private void CreateTreeViewMenuStrip()
         {
             this.renameToolStripMenuItem.Enabled = tvRegistryDirectory.SelectedNode.Parent != null;
 
@@ -530,12 +523,13 @@ namespace Quasar.Server.Forms
             this.Close();
         }
 
-        private void menuStripDelete_Click(object sender, EventArgs e) {
-            if(tvRegistryDirectory.Focused)
+        private void menuStripDelete_Click(object sender, EventArgs e)
+        {
+            if (tvRegistryDirectory.Focused)
             {
                 deleteRegistryKey_Click(this, e);
             }
-            else if (lstRegistryValues.Focused) 
+            else if (lstRegistryValues.Focused)
             {
                 deleteRegistryValue_Click(this, e);
             }
@@ -725,7 +719,7 @@ namespace Quasar.Server.Forms
         private void deleteRegistryValue_Click(object sender, EventArgs e)
         {
             //Prompt user to confirm delete
-            string msg = "Deleting certain registry values could cause system instability. Are you sure you want to permanently delete " + (lstRegistryValues.SelectedItems.Count == 1 ? "this value?": "these values?");
+            string msg = "Deleting certain registry values could cause system instability. Are you sure you want to permanently delete " + (lstRegistryValues.SelectedItems.Count == 1 ? "this value?" : "these values?");
             string caption = "Confirm Value Delete";
             var answer = MessageBox.Show(msg, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -735,7 +729,7 @@ namespace Quasar.Server.Forms
                 {
                     if (item.GetType() == typeof(RegistryValueLstItem))
                     {
-                        RegistryValueLstItem registryValue = (RegistryValueLstItem) item;
+                        RegistryValueLstItem registryValue = (RegistryValueLstItem)item;
                         _registryHandler.DeleteRegistryValue(tvRegistryDirectory.SelectedNode.FullPath, registryValue.RegName);
                     }
                 }
@@ -744,8 +738,8 @@ namespace Quasar.Server.Forms
 
         private void renameRegistryValue_Click(object sender, EventArgs e)
         {
-		    lstRegistryValues.LabelEdit = true;
-		    lstRegistryValues.SelectedItems[0].BeginEdit();
+            lstRegistryValues.LabelEdit = true;
+            lstRegistryValues.SelectedItems[0].BeginEdit();
         }
 
         private void modifyRegistryValue_Click(object sender, EventArgs e)
@@ -824,7 +818,7 @@ namespace Quasar.Server.Forms
             {
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    _registryHandler.ChangeRegistryValue(keyPath, (RegValueData) frm.Tag);
+                    _registryHandler.ChangeRegistryValue(keyPath, (RegValueData)frm.Tag);
                 }
             }
         }

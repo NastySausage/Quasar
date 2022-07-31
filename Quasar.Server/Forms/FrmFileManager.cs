@@ -1,19 +1,11 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Helpers;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Server.Controls;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Models;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using Process = System.Diagnostics.Process;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmFileManager : Form
     {
@@ -202,7 +194,7 @@ namespace Quasar.Server.Forms
 
             var lvi = new ListViewItem(new[]
                     {transfer.Id.ToString(), transfer.Type.ToString(), transfer.Status, transfer.RemotePath})
-                {Tag = transfer, ImageIndex = GetTransferImageIndex(transfer.Status)};
+            { Tag = transfer, ImageIndex = GetTransferImageIndex(transfer.Status) };
 
             lstTransfers.Items.Add(lvi);
         }
@@ -269,7 +261,7 @@ namespace Quasar.Server.Forms
         {
             if (lstDirectory.SelectedItems.Count > 0)
             {
-                FileType type = (FileType) lstDirectory.SelectedItems[0].Tag;
+                FileType type = (FileType)lstDirectory.SelectedItems[0].Tag;
 
                 switch (type)
                 {
@@ -324,7 +316,7 @@ namespace Quasar.Server.Forms
         {
             foreach (ListViewItem files in lstDirectory.SelectedItems)
             {
-                FileType type = (FileType) files.Tag;
+                FileType type = (FileType)files.Tag;
 
                 if (type == FileType.File)
                 {
@@ -431,7 +423,7 @@ namespace Quasar.Server.Forms
         {
             if (!Directory.Exists(_connectClient.Value.DownloadDirectory))
                 Directory.CreateDirectory(_connectClient.Value.DownloadDirectory);
-            
+
             Process.Start(_connectClient.Value.DownloadDirectory);
         }
 

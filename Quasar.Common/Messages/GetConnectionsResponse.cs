@@ -1,7 +1,6 @@
 ﻿using ProtoBuf;
-using Quasar.Common.Models;
 
-namespace Quasar.Common.Messages
+namespace Quasar.Common
 {
     [ProtoContract]
     public class GetConnectionsResponse : IMessage

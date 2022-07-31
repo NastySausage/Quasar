@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Quasar.Common.DNS
+namespace Quasar.Common
 {
     public class Host
     {

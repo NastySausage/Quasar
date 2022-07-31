@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+using Quasar.Common;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with the remote registry.
@@ -44,7 +41,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = KeysReceived;
-                handler?.Invoke(this, rootKey, (RegSeekerMatch[]) t);
+                handler?.Invoke(this, rootKey, (RegSeekerMatch[])t);
             }, matches);
         }
 
@@ -58,7 +55,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = KeyCreated;
-                handler?.Invoke(this, parentPath, (RegSeekerMatch) t);
+                handler?.Invoke(this, parentPath, (RegSeekerMatch)t);
             }, match);
         }
 
@@ -72,7 +69,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = KeyDeleted;
-                handler?.Invoke(this, parentPath, (string) t);
+                handler?.Invoke(this, parentPath, (string)t);
             }, subKey);
         }
 
@@ -87,7 +84,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = KeyRenamed;
-                handler?.Invoke(this, parentPath, oldSubKey, (string) t);
+                handler?.Invoke(this, parentPath, oldSubKey, (string)t);
             }, newSubKey);
         }
 
@@ -115,7 +112,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = ValueDeleted;
-                handler?.Invoke(this, keyPath, (string) t);
+                handler?.Invoke(this, keyPath, (string)t);
             }, valueName);
         }
 
@@ -130,7 +127,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = ValueRenamed;
-                handler?.Invoke(this, keyPath, oldValueName, (string) t);
+                handler?.Invoke(this, keyPath, oldValueName, (string)t);
             }, newValueName);
         }
 
@@ -144,7 +141,7 @@ namespace Quasar.Server.Messages
             SynchronizationContext.Post(t =>
             {
                 var handler = ValueChanged;
-                handler?.Invoke(this, keyPath, (RegValueData) t);
+                handler?.Invoke(this, keyPath, (RegValueData)t);
             }, value);
         }
 

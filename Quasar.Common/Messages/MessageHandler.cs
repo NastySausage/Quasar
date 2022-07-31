@@ -1,8 +1,7 @@
-﻿using Quasar.Common.Networking;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Quasar.Common.Messages
+namespace Quasar.Common
 {
     /// <summary>
     /// Handles registrations of <see cref="IMessageProcessor"/>s and processing of <see cref="IMessage"/>s.

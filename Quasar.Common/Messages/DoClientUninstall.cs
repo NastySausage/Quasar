@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Quasar.Common.Messages
+namespace Quasar.Common
 {
     [ProtoContract]
     public class DoClientUninstall : IMessage

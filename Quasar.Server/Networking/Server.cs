@@ -1,5 +1,4 @@
-﻿using Quasar.Common.Extensions;
-using Quasar.Common.Messages;
+﻿using Quasar.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Quasar.Server.Networking
+namespace Quasar.Server
 {
     public class Server
     {
@@ -151,11 +150,6 @@ namespace Quasar.Server.Networking
         private const uint KeepAliveInterval = 25000; // 25 s
 
         /// <summary>
-        /// The buffer pool to hold the receive-buffers for the clients.
-        /// </summary>
-        private readonly BufferPool _bufferPool = new BufferPool(BufferSize, 1) { ClearOnReturn = false };
-
-        /// <summary>
         /// The listening state of the server. True if listening, else False.
         /// </summary>
         public bool Listening { get; private set; }
@@ -280,7 +274,7 @@ namespace Quasar.Server.Networking
                                 sslStream = new SslStream(new NetworkStream(clientSocket, true), false);
                                 // the SslStream owns the socket and on disposing also disposes the NetworkStream and Socket
                                 sslStream.BeginAuthenticateAsServer(ServerCertificate, false, SslProtocols.Tls12, false, EndAuthenticateClient,
-                                    new PendingClient {Stream = sslStream, EndPoint = (IPEndPoint) clientSocket.RemoteEndPoint});
+                                    new PendingClient { Stream = sslStream, EndPoint = (IPEndPoint)clientSocket.RemoteEndPoint });
                             }
                             catch (Exception)
                             {
@@ -290,7 +284,7 @@ namespace Quasar.Server.Networking
                         case SocketError.ConnectionReset:
                             break;
                         default:
-                            throw new SocketException((int) e.SocketError);
+                            throw new SocketException((int)e.SocketError);
                     }
 
                     e.AcceptSocket = null; // enable reuse
@@ -317,12 +311,12 @@ namespace Quasar.Server.Networking
         /// <param name="ar">The status of the asynchronous operation.</param>
         private void EndAuthenticateClient(IAsyncResult ar)
         {
-            var con = (PendingClient) ar.AsyncState;
+            var con = (PendingClient)ar.AsyncState;
             try
             {
                 con.Stream.EndAuthenticateAsServer(ar);
 
-                Client client = new Client(_bufferPool, con.Stream, con.EndPoint);
+                Client client = new Client(con.Stream, con.EndPoint);
                 AddClient(client);
                 OnClientState(client, true);
             }

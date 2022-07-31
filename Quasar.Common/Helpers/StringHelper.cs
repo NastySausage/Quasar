@@ -1,8 +1,7 @@
-﻿using Quasar.Common.Utilities;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Quasar.Common.Helpers
+namespace Quasar.Common
 {
     public static class StringHelper
     {

@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Quasar.Common.Cryptography;
-using Quasar.Common.Helpers;
 
 namespace Quasar.Common.Tests.Cryptography
 {

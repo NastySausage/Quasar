@@ -1,8 +1,8 @@
-﻿using Quasar.Common.Enums;
+﻿using Quasar.Common;
 using System;
 using System.Security.Principal;
 
-namespace Quasar.Client.User
+namespace Quasar.Client
 {
     public class UserAccount
     {

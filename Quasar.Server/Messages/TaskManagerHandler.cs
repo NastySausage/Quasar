@@ -1,15 +1,11 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with remote tasks.
     /// </summary>
-    public class TaskManagerHandler : MessageProcessorBase<Process[]>
+    public class TaskManagerHandler : MessageProcessorBase<QuasarProcess[]>
     {
         /// <summary>
         /// Represents the method that will handle the result of a process action.
@@ -91,7 +87,7 @@ namespace Quasar.Server.Messages
         /// <param name="isUpdate">Decides whether the file is a client update.</param>
         public void StartProcessFromWeb(string url, bool isUpdate = false)
         {
-            _client.Send(new DoProcessStart { DownloadUrl = url, IsUpdate = isUpdate});
+            _client.Send(new DoProcessStart { DownloadUrl = url, IsUpdate = isUpdate });
         }
 
         /// <summary>

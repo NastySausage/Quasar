@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Models;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmPasswordRecovery : Form
     {
@@ -119,7 +114,7 @@ namespace Quasar.Server.Forms
                     if (lvg == null) // create new group
                     {
                         lvg = new ListViewGroup
-                            { Name = _noResultsFound.Application, Header = _noResultsFound.Application };
+                        { Name = _noResultsFound.Application, Header = _noResultsFound.Application };
                         lstPasswords.Groups.Add(lvg); // add the new group
                     }
 
@@ -131,7 +126,7 @@ namespace Quasar.Server.Forms
                 var items = new List<ListViewItem>();
                 foreach (var acc in accounts)
                 {
-                    var lvi = new ListViewItem {Tag = acc, Text = clientIdentifier};
+                    var lvi = new ListViewItem { Tag = acc, Text = clientIdentifier };
 
                     lvi.SubItems.Add(acc.Url); // URL
                     lvi.SubItems.Add(acc.Username); // User
@@ -204,7 +199,7 @@ namespace Quasar.Server.Forms
             }
             return lvg;
         }
-        
+
         #endregion
 
         #region Menu

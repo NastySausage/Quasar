@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Quasar.Server.Helper;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmVisitWebsite : Form
     {

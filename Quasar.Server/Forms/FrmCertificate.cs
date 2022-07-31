@@ -1,12 +1,10 @@
-﻿using Quasar.Server.Helper;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
-using Quasar.Server.Models;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmCertificate : Form
     {

@@ -1,10 +1,9 @@
-﻿using Quasar.Common.Models;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Quasar.Common.IO
+namespace Quasar.Common
 {
     public class FileSplit : IEnumerable<FileChunk>, IDisposable
     {

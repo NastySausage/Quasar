@@ -1,5 +1,4 @@
-﻿using Quasar.Common.Helpers;
-using Quasar.Server.Helper;
+﻿using Quasar.Common;
 using Quasar.Server.Utilities;
 using System;
 using System.Windows.Forms;
@@ -41,16 +40,16 @@ namespace Quasar.Server.Controls
             if (PlatformHelper.VistaOrHigher)
             {
                 // set window theme to explorer
-                NativeMethods.SetWindowTheme(this.Handle, "explorer", null);
+                Win32.SetWindowTheme(this.Handle, "explorer", null);
             }
 
             if (PlatformHelper.XpOrHigher)
             {
                 // removes the ugly dotted line around focused item
-                NativeMethods.SendMessage(this.Handle, WM_CHANGEUISTATE, _removeDots, IntPtr.Zero);
+                Win32.SendMessage(this.Handle, WM_CHANGEUISTATE, _removeDots, IntPtr.Zero);
             }
         }
-        
+
         /// <summary>
         /// Raises the <see cref="E:ColumnClick" /> event.
         /// </summary>

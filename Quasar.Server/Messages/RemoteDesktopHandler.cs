@@ -1,13 +1,9 @@
-﻿using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Networking;
-using Quasar.Common.Video.Codecs;
-using Quasar.Server.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Drawing;
 using System.IO;
 
-namespace Quasar.Server.Messages
+namespace Quasar.Server
 {
     /// <summary>
     /// Handles messages for the interaction with the remote desktop.
@@ -192,7 +188,7 @@ namespace Quasar.Server.Messages
         /// <param name="keyDown">Indicates whether it's a keydown or keyup event.</param>
         public void SendKeyboardEvent(byte keyCode, bool keyDown)
         {
-            _client.Send(new DoKeyboardEvent {Key = keyCode, KeyDown = keyDown});
+            _client.Send(new DoKeyboardEvent { Key = keyCode, KeyDown = keyDown });
         }
 
         private void Execute(ISender client, GetDesktopResponse message)
@@ -213,10 +209,10 @@ namespace Quasar.Server.Messages
                     // create deep copy & resize bitmap to local resolution
                     OnReport(new Bitmap(_codec.DecodeData(ms), LocalResolution));
                 }
-                
+
                 message.Image = null;
 
-                client.Send(new GetDesktop {Quality = message.Quality, DisplayIndex = message.Monitor});
+                client.Send(new GetDesktop { Quality = message.Quality, DisplayIndex = message.Monitor });
             }
         }
 

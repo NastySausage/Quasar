@@ -1,4 +1,4 @@
-﻿using Quasar.Common.Messages.ReverseProxy;
+﻿using Quasar.Common;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -13,11 +13,11 @@ namespace Quasar.Client.ReverseProxy
         public Socket Handle { get; private set; }
         public string Target { get; private set; }
         public int Port { get; private set; }
-        public Networking.Client Client { get; private set; }
+        public Client Client { get; private set; }
         private byte[] _buffer;
         private bool _disconnectIsSend;
 
-        public ReverseProxyClient(ReverseProxyConnect command, Networking.Client client)
+        public ReverseProxyClient(ReverseProxyConnect command, Client client)
         {
             this.ConnectionId = command.ConnectionId;
             this.Target = command.Target;
@@ -96,7 +96,7 @@ namespace Quasar.Client.ReverseProxy
 
                 byte[] payload = new byte[received];
                 Array.Copy(_buffer, payload, received);
-                Client.Send(new ReverseProxyData {ConnectionId = ConnectionId, Data = payload});
+                Client.Send(new ReverseProxyData { ConnectionId = ConnectionId, Data = payload });
             }
             catch
             {
@@ -121,7 +121,7 @@ namespace Quasar.Client.ReverseProxy
             {
                 _disconnectIsSend = true;
                 //send to the Server we've been disconnected
-                Client.Send(new ReverseProxyDisconnect {ConnectionId = ConnectionId});
+                Client.Send(new ReverseProxyDisconnect { ConnectionId = ConnectionId });
             }
 
             try

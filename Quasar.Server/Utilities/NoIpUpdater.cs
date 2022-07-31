@@ -1,5 +1,4 @@
-﻿using Quasar.Server.Models;
-using System;
+﻿using System;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -13,7 +12,7 @@ namespace Quasar.Server.Utilities
         public static void Start()
         {
             if (_running) return;
-            Thread updateThread = new Thread(BackgroundUpdater) {IsBackground = true};
+            Thread updateThread = new Thread(BackgroundUpdater) { IsBackground = true };
             updateThread.Start();
         }
 

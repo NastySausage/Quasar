@@ -1,7 +1,7 @@
-﻿using System;
-using ProtoBuf;
+﻿using ProtoBuf;
+using System;
 
-namespace Quasar.Common.Video
+namespace Quasar.Common
 {
     [ProtoContract]
     public class Resolution : IEquatable<Resolution>

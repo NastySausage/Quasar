@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Quasar.Server.Helper;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     public partial class FrmShowMessagebox : Form
     {
@@ -36,8 +35,8 @@ namespace Quasar.Server.Forms
         {
             MessageBox.Show(null, txtText.Text, txtCaption.Text,
                 (MessageBoxButtons)
-                    Enum.Parse(typeof (MessageBoxButtons), GetMessageBoxButton(cmbMsgButtons.SelectedIndex)),
-                (MessageBoxIcon) Enum.Parse(typeof (MessageBoxIcon), GetMessageBoxIcon(cmbMsgIcon.SelectedIndex)));
+                    Enum.Parse(typeof(MessageBoxButtons), GetMessageBoxButton(cmbMsgButtons.SelectedIndex)),
+                (MessageBoxIcon)Enum.Parse(typeof(MessageBoxIcon), GetMessageBoxIcon(cmbMsgIcon.SelectedIndex)));
         }
 
         private void btnSend_Click(object sender, EventArgs e)

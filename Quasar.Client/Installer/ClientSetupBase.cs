@@ -1,4 +1,4 @@
-﻿using Quasar.Client.User;
+﻿using Quasar.Client;
 
 namespace Quasar.Client.Setup
 {

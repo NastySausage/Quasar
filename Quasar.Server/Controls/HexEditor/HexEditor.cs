@@ -77,25 +77,25 @@ namespace Quasar.Server.Controls.HexEditor
         /// are to be displayed in the 
         /// HexEditor
         /// </summary>
-        ByteCollection _hexTable;
+        private ByteCollection _hexTable;
 
         /// <summary>
         /// Contains the type of counter
         /// for the linecount
         /// </summary>
-        string _lineCountCaps = "X";
+        private string _lineCountCaps = "X";
 
         /// <summary>
         /// Contains the number of chars
         /// to be used in the line count
         /// </summary>
-        int _nrCharsLineCount = 4;
+        private int _nrCharsLineCount = 4;
 
         /// <summary>
         /// Contains the caret for the
         /// control
         /// </summary>
-        Caret _caret;
+        private Caret _caret;
 
         #region Boundarys
 
@@ -103,13 +103,13 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the bound for everything that
         /// is to be displayed in the control
         /// </summary>
-        Rectangle _recContent;
+        private Rectangle _recContent;
 
         /// <summary>
         /// Contains the boundary for every 
         /// line count for the control
         /// </summary>
-        Rectangle _recLineCount;
+        private Rectangle _recLineCount;
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the format of the line count
         /// string that is presented in this control
         /// </summary>
-        StringFormat _stringFormat;
+        private StringFormat _stringFormat;
 
         #endregion
 
@@ -129,39 +129,39 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the index of the first 
         /// visible byte
         /// </summary>
-        int _firstByte;
+        private int _firstByte;
 
         /// <summary>
         /// Contains the index of the last 
         /// visible byte
         /// </summary>
-        int _lastByte;
+        private int _lastByte;
 
         /// <summary>
         /// Contains the maximum bytes that
         /// can be visible horizontally
         /// </summary>
-        int _maxBytesH;
+        private int _maxBytesH;
 
         /// <summary>
         /// Contains the maximum bytes that
         /// can be visible vertically
         /// </summary>
-        int _maxBytesV;
+        private int _maxBytesV;
 
         /// <summary>
         /// Contains the maximum number of 
         /// bytes that can be visible at a 
         /// time.
         /// </summary>
-        int _maxBytes;
+        private int _maxBytes;
 
         /// <summary>
         /// Contains the maximum number of 
         /// rows with bytes that are fully 
         /// visible.
         /// </summary>
-        int _maxVisibleBytesV;
+        private int _maxVisibleBytesV;
 
         #endregion
 
@@ -171,45 +171,45 @@ namespace Quasar.Server.Controls.HexEditor
         /// Contains the vertical scroll
         /// bar for the control
         /// </summary>
-        VScrollBar _vScrollBar;
+        private VScrollBar _vScrollBar;
 
         /// <summary>
         /// Contains the with of the scrollbar
         /// in pixels
         /// </summary>
-        int _vScrollBarWidth = 20;
+        private int _vScrollBarWidth = 20;
 
         /// <summary>
         /// Contains the current position of the 
         /// scrollbar
         /// </summary>
-        int _vScrollPos;
+        private int _vScrollPos;
 
         /// <summary>
         /// Contains the maximum value that
         /// the scrollbar can have
         /// </summary>
-        int _vScrollMax;
+        private int _vScrollMax;
 
         /// <summary>
         /// Contains the minimum value
         /// that the scrollbar may have
         /// </summary>
-        int _vScrollMin;
+        private int _vScrollMin;
 
         /// <summary>
         /// Contains the value for the 
         /// size of a  smallchange in the
         /// scrollbar
         /// </summary>
-        int _vScrollSmall;
+        private int _vScrollSmall;
 
         /// <summary>
         /// Contains the value for the 
         /// size of a largechange in the
         /// scrollbar
         /// </summary>
-        int _vScrollLarge;
+        private int _vScrollLarge;
 
         #endregion
 
@@ -293,7 +293,9 @@ namespace Quasar.Server.Controls.HexEditor
                 if (CharSizeChanged != null)
                     CharSizeChanged(this, EventArgs.Empty);
             }
-        }SizeF _charSize;
+        }
+
+        private SizeF _charSize;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaxBytesV
@@ -332,7 +334,9 @@ namespace Quasar.Server.Controls.HexEditor
                 UpdateRectanglePositioning();
                 Invalidate();
             }
-        }bool _isVScrollHidden = true;
+        }
+
+        private bool _isVScrollHidden = true;
 
         #endregion
 
@@ -355,7 +359,9 @@ namespace Quasar.Server.Controls.HexEditor
                 UpdateRectanglePositioning();
                 Invalidate();
             }
-        }int _bytesPerLine = 8;
+        }
+
+        private int _bytesPerLine = 8;
 
 
         /// <summary>
@@ -375,7 +381,9 @@ namespace Quasar.Server.Controls.HexEditor
                 UpdateRectanglePositioning();
                 Invalidate();
             }
-        }int _entityMargin = 10;
+        }
+
+        private int _entityMargin = 10;
 
         /// <summary>
         /// Contains the type of border 
@@ -397,7 +405,9 @@ namespace Quasar.Server.Controls.HexEditor
                 UpdateRectanglePositioning();
                 Invalidate();
             }
-        }BorderStyle _borderStyle = BorderStyle.Fixed3D;
+        }
+
+        private BorderStyle _borderStyle = BorderStyle.Fixed3D;
 
         /// <summary>
         /// Contains the color for the border 
@@ -416,7 +426,9 @@ namespace Quasar.Server.Controls.HexEditor
                 _borderColor = value;
                 Invalidate();
             }
-        }Color _borderColor = Color.Empty;
+        }
+
+        private Color _borderColor = Color.Empty;
 
         /// <summary>
         /// Contains the color of the selected
@@ -433,7 +445,9 @@ namespace Quasar.Server.Controls.HexEditor
 
                 _selectionBackColor = value;
             }
-        }Color _selectionBackColor = Color.Blue;
+        }
+
+        private Color _selectionBackColor = Color.Blue;
 
         /// <summary>
         /// Contains the color of the selected
@@ -450,7 +464,9 @@ namespace Quasar.Server.Controls.HexEditor
 
                 _selectionForeColor = value;
             }
-        }Color _selectionForeColor = Color.White;
+        }
+
+        private Color _selectionForeColor = Color.White;
 
         /// <summary>
         /// Contains the case type for the
@@ -474,7 +490,9 @@ namespace Quasar.Server.Controls.HexEditor
 
                 Invalidate();
             }
-        }CaseStyle _lineCountCaseStyle = CaseStyle.UpperCase;
+        }
+
+        private CaseStyle _lineCountCaseStyle = CaseStyle.UpperCase;
 
         /// <summary>
         /// Contains the case type for the
@@ -498,7 +516,9 @@ namespace Quasar.Server.Controls.HexEditor
 
                 Invalidate();
             }
-        }CaseStyle _hexViewCaseStyle = CaseStyle.UpperCase;
+        }
+
+        private CaseStyle _hexViewCaseStyle = CaseStyle.UpperCase;
 
         /// <summary>
         /// Property that contains if the
@@ -519,7 +539,9 @@ namespace Quasar.Server.Controls.HexEditor
                 UpdateRectanglePositioning();
                 Invalidate();
             }
-        }bool _isVScrollVisible = false;
+        }
+
+        private bool _isVScrollVisible = false;
 
         #endregion
 
@@ -1133,9 +1155,9 @@ namespace Quasar.Server.Controls.HexEditor
 
             //Calculate needed maximums for the bytes
             _maxBytesH = _bytesPerLine;
-            _maxBytesV = (int)Math.Ceiling(((float)_recContent.Height / (float)_recLineCount.Height));
+            _maxBytesV = (int)Math.Ceiling((_recContent.Height / (float)_recLineCount.Height));
             _maxBytes = _maxBytesH * _maxBytesV;
-            _maxVisibleBytesV = (int)Math.Floor(((float)_recContent.Height / (float)_recLineCount.Height));
+            _maxVisibleBytesV = (int)Math.Floor((_recContent.Height / (float)_recLineCount.Height));
 
             UpdateScrollBarSize();
         }
@@ -1150,7 +1172,7 @@ namespace Quasar.Server.Controls.HexEditor
             else
             {
                 _firstByte = _vScrollPos * _maxBytesH;
-                _lastByte = (int)Math.Min(HexTableLength, _firstByte + _maxBytes);
+                _lastByte = Math.Min(HexTableLength, _firstByte + _maxBytes);
             }
         }
 

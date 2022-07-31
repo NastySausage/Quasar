@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Quasar.Common.Models
+namespace Quasar.Common
 {
     [ProtoContract]
     public class FileChunk

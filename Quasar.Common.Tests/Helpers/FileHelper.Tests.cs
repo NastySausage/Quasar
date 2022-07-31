@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Quasar.Common.Helpers;
 
 namespace Quasar.Common.Tests.Helpers
 {
@@ -19,7 +18,7 @@ namespace Quasar.Common.Tests.Helpers
         [TestMethod, TestCategory("Helpers")]
         public void ValidateExecutableTest()
         {
-            var bytes = new byte[] {77, 90};
+            var bytes = new byte[] { 77, 90 };
 
             Assert.IsTrue(FileHelper.HasExecutableIdentifier(bytes));
         }
@@ -27,7 +26,7 @@ namespace Quasar.Common.Tests.Helpers
         [TestMethod, TestCategory("Helpers")]
         public void ValidateExecutableTest2()
         {
-            var bytes = new byte[] {22, 93};
+            var bytes = new byte[] { 22, 93 };
 
             Assert.IsFalse(FileHelper.HasExecutableIdentifier(bytes));
         }

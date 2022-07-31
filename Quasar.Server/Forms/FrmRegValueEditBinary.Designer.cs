@@ -1,6 +1,6 @@
 ﻿using Quasar.Server.Controls.HexEditor;
 
-namespace Quasar.Server.Forms
+namespace Quasar.Server
 {
     partial class FrmRegValueEditBinary
     {
